@@ -5,10 +5,5 @@ return [
         'token' => '',
         'code' => filter_input(INPUT_GET, 'code', FILTER_SANITIZE_STRING),
     ],
-    'plugins' => [
-        'HtmlSource' => [
-            'class' => Plugin\HtmlSource\HtmlSource::class,
-            'parameters' => [],
-        ],
-    ],
+    'plugins' => include('plugins.php'),
 ];

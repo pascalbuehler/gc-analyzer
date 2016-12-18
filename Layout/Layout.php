@@ -5,7 +5,7 @@ class Layout {
     private $data = null;
     private $pluginData = [];
     
-    public function __construct(\stdClass $data) {
+    public function __construct(array $data) {
         $this->data = $data;
     }
     

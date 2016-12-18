@@ -38,7 +38,7 @@ $data = file_get_contents($url);
 if(!$data) {
     die('Api not reachable ('.$url.')');
 }
-$data = json_decode($data);
+$data = json_decode($data, true);
 
 // ENRICH BASEDATA
 // @todo
@@ -55,7 +55,7 @@ if(isset($config['plugins']) && is_array($config['plugins']) && count($config['p
         $parameters = isset($pluginConfig['parameters']) ? $pluginConfig['parameters'] : [];
         $plugin = new $pluginConfig['class']($data, $parameters);
         $plugin->calculate();
-        $data->plugins[$pluginName] = $plugin->getResult();
+        $data['plugins'][$pluginName] = $plugin->getResult();
         $pluginOutput = $plugin->getOutput();
         if($pluginOutput!==false) {
             $layout->addPluginData($pluginName, $pluginOutput, $plugin->getSuccess());

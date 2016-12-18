@@ -6,7 +6,7 @@ abstract class AbstractPlugin implements PluginInterface {
     protected $parameters = [];
     private $success = false;
     
-    public function __construct(\stdClass $data, array $parameters = []) {
+    public function __construct(array $data, array $parameters = []) {
         $this->data = $data;
         $this->parameters = $parameters;
     }

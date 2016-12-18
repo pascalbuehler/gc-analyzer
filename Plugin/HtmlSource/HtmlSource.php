@@ -6,11 +6,11 @@ class HtmlSource extends \Plugin\AbstractPlugin {
     private $longDescription = '';
     
     public function calculate() {
-        if(property_exists($this->data, 'ShortDescription')) {
-            $this->shortDescription = trim($this->data->ShortDescription);
+        if(isset($this->data['ShortDescription']) && strlen($this->data['ShortDescription'])>0) {
+            $this->shortDescription = trim($this->data['ShortDescription']);
         }
-        if(property_exists($this->data, 'LongDescription')) {
-            $this->longDescription = trim($this->data->LongDescription);
+        if(isset($this->data['LongDescription']) && strlen($this->data['LongDescription'])>0) {
+            $this->longDescription = trim($this->data['LongDescription']);
         }
     }
     

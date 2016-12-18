@@ -40,7 +40,7 @@ class MyPlugin extends \Plugin\AbstractPlugin {
         // Get a parameter for this plugin
         $this->quiet = $this->parameters['quiet'];
         // Grab some data
-        $this->owner = $this->data->Owner;
+        $this->owner = $this->data['Owner'];
         // Set the success state
         $this->setSuccess($this->owner=='frigidor');
     }
