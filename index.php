@@ -1,5 +1,6 @@
 <?php
 use Layout\Layout;
+use Plugin\PluginInterface;
 
 // SECURITY
 // Unset PHP_SELF because it allows SQL-Injection and Cross-Site-Scripting
@@ -49,11 +50,17 @@ $layout = new Layout($data);
 // PLUGINS
 if(isset($config['plugins']) && is_array($config['plugins']) && count($config['plugins'])>0) {
     foreach($config['plugins'] as $pluginName => $pluginConfig) {
+        // Load plugin
         if(!isset($pluginConfig['class'])) {
             continue;
         }
         $parameters = isset($pluginConfig['parameters']) ? $pluginConfig['parameters'] : [];
         $plugin = new $pluginConfig['class']($data, $parameters);
+        // Check plugin
+        if(!in_array(PluginInterface::class, class_implements($plugin))) {
+            continue;
+        }
+        // Run plugin
         $plugin->calculate();
         $data['plugins'][$pluginName] = $plugin->getResult();
         $pluginOutput = $plugin->getOutput();
