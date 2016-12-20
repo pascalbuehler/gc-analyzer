@@ -2,23 +2,28 @@
 namespace Layout;
 
 class Layout {
-    private $data = null;
-    private $pluginData = [];
+    private $template;
+    private $templateData = [];
     
-    public function __construct(array $data) {
-        $this->data = $data;
+    public function __construct($template, array $templateData = []) {
+        $this->template = $template;
+        $this->templateData = $templateData;
     }
     
     public function addPluginData($pluginName, $pluginOutput, $pluginSuccess) {
-        $this->pluginData[$pluginName] = [
+        $this->templateData['plugins'][$pluginName] = [
             'output' => $pluginOutput,
             'success' => $pluginSuccess
         ];
     }
     
     public function render() {
-        $data = $this->data;
-        $pluginData = $this->pluginData;
-        include('view/layout.phtml');
+        // Export template data
+        foreach($this->templateData as $dataName => $data) {
+            $$dataName = $data;
+        }
+        
+        $templateName = 'view/'.$this->template.'.phtml';
+        include($templateName);
     }
 }

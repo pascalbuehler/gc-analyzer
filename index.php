@@ -35,17 +35,17 @@ if(!$config) {
 
 // BASEDATA
 $url = $config['apiEndpoint'].'?'.http_build_query($config['apiParameters']);
-$data = file_get_contents($url);
-if(!$data) {
+$pluginData = file_get_contents($url);
+if(!$pluginData) {
     die('Api not reachable ('.$url.')');
 }
-$data = json_decode($data, true);
+$pluginData = json_decode($pluginData, true);
 
 // ENRICH BASEDATA
 // @todo
 
 // LAYOUT INIT
-$layout = new Layout($data);
+$layout = new Layout('analyze');
 
 // PLUGINS
 if(isset($config['plugins']) && is_array($config['plugins']) && count($config['plugins'])>0) {
@@ -55,14 +55,14 @@ if(isset($config['plugins']) && is_array($config['plugins']) && count($config['p
             continue;
         }
         $parameters = isset($pluginConfig['parameters']) ? $pluginConfig['parameters'] : [];
-        $plugin = new $pluginConfig['class']($data, $parameters);
+        $plugin = new $pluginConfig['class']($pluginData, $parameters);
         // Check plugin
         if(!in_array(PluginInterface::class, class_implements($plugin))) {
             continue;
         }
         // Run plugin
         $plugin->calculate();
-        $data['plugins'][$pluginName] = $plugin->getResult();
+        $pluginData['plugins'][$pluginName] = $plugin->getResult();
         $pluginOutput = $plugin->getOutput();
         if($pluginOutput!==false) {
             $layout->addPluginData($pluginName, $pluginOutput, $plugin->getSuccess());
