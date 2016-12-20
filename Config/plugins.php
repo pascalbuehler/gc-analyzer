@@ -14,4 +14,30 @@ return [
             ]
         ],
     ],
+    'HtmlImages' => [
+        'class' => Plugin\HtmlImages\HtmlImages::class,
+        'parameters' => [
+            'fields' => [
+                'ShortDescription',
+                'LongDescription',
+            ]
+        ],
+    ],
+	'ListingImages' => [
+        'class' => Plugin\ListingImages\ListingImages::class,
+        'parameters' => [
+            'fields' => [
+                'Images'
+            ]
+        ],
+    ],
+    'ImageInfo' => [
+        'class' => Plugin\ImageInfo\ImageInfo::class,
+        'parameters' => [
+            'imageSources' => [
+                'HtmlImages',
+				'ListingImages'
+            ]
+        ],
+    ],
 ];
