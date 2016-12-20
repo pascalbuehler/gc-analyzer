@@ -14,4 +14,13 @@ return [
             ]
         ],
     ],
+    'ImagesInListing' => [
+        'class' => Plugin\ImagesInListing\ImagesInListing::class,
+        'parameters' => [
+            'fields' => [
+                'ShortDescription',
+                'LongDescription',
+            ]
+        ],
+    ],
 ];
