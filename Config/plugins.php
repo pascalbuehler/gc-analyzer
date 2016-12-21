@@ -27,6 +27,18 @@ return [
             'GC68P2Q' => 'Login',
         ],
     ],
+    'HtmlLinks' => [
+        'class' => Plugin\HtmlLinks\HtmlLinks::class,
+        'parameters' => [
+            'fields' => [
+                'ShortDescription',
+                'LongDescription',
+            ]
+        ],
+        'examples' => [
+            'GC68P2Q' => 'Login',
+        ],
+    ],
     'HtmlImages' => [
         'class' => Plugin\HtmlImages\HtmlImages::class,
         'parameters' => [

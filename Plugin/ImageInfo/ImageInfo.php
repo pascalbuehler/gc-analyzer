@@ -14,6 +14,8 @@ class ImageInfo extends \Plugin\AbstractPlugin {
                 {
                     $size = getimagesize($image);
 
+                    $imageInfo = array();
+                    $imageInfo['source'] = $imageListName;
                     $imageInfo['url'] = $image;
                     $imageInfo['width'] = $size[0];
                     $imageInfo['height'] = $size[1];
@@ -29,7 +31,13 @@ class ImageInfo extends \Plugin\AbstractPlugin {
                         }
                     }
 
-                    $this->imagesWithInfo[$imageListName][] = $imageInfo;
+                    if (!array_key_exists($image, $this->imagesWithInfo))
+	                {
+                        $this->imagesWithInfo[$image] = $imageInfo;
+                    } else {
+                        //image exists in the list, add current source info
+                        $this->imagesWithInfo[$image]['source'] .= ' / '.$imageInfo['source'];
+                    }
                 }
             }
         }
@@ -44,20 +52,28 @@ class ImageInfo extends \Plugin\AbstractPlugin {
     public function getOutput() {
         $source = '';
         if(count($this->imagesWithInfo)>0) {
-            foreach($this->imagesWithInfo as $imageListName => $imagesWithInfo) {
-                $source.= '<h4>'.$imageListName.'</h4>'.PHP_EOL;
+            foreach($this->imagesWithInfo as $imageWithInfo) {
+                $source.= '<div class="row">'.PHP_EOL;
+                $source.= '  <div class="col-lg-6 limit-img">'.PHP_EOL;
+                $source.= '    <h5>Image from '.$imageWithInfo['source'].'</h5>'.PHP_EOL;
+                $source.= '    <div class="well">'.PHP_EOL;
+                $source.= '      <img src="'.$imageWithInfo['url'].'" /><br />'.PHP_EOL;
+                $source.= '      Image: '.$imageWithInfo['url'].'<br />'.PHP_EOL;
+                $source.= '      Width: '.$imageWithInfo['width'].'<br />'.PHP_EOL;
+                $source.= '      Height: '.$imageWithInfo['height'].'<br />'.PHP_EOL;
+                $source.= '      Mime-Type: '.$imageWithInfo['mime'].'<br />'.PHP_EOL;
+                $source.= '    </div>'.PHP_EOL;
+                $source.= '  </div>'.PHP_EOL;
 
-                foreach($imagesWithInfo as $imageWithInfo) {
-                    $source.= 'Image: '.$imageWithInfo['url'].'<br />'.PHP_EOL;
-                    $source.= 'Width: '.$imageWithInfo['width'].'<br />'.PHP_EOL;
-                    $source.= 'Height: '.$imageWithInfo['height'].'<br />'.PHP_EOL;
-                    $source.= 'Mime-Type: '.$imageWithInfo['mime'].'<br />'.PHP_EOL;
+                if (isset($imageWithInfo['exif'])){
+                    $exifPrinted = print_r($imageWithInfo['exif'],true);
 
-                    if (isset($imageWithInfo['exif'])){
-                        $exifPrinted = print_r($imageWithInfo['exif'],true);
-                        $source.= 'Exif: <pre class="pre-scrollable">'.$exifPrinted.'</pre>'.PHP_EOL;
-                    }
+                    $source.= '  <div class="col-lg-6">'.PHP_EOL;
+                    $source.= '    <h5>EXIF</h5>'.PHP_EOL;
+                    $source.= '    <pre class="pre-scrollable">'.$exifPrinted.'</pre>'.PHP_EOL;
+                    $source.= '  </div>'.PHP_EOL;
                 }
+                $source.= '</div>'.PHP_EOL;
             }
         }
 
