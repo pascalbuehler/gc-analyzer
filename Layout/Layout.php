@@ -10,9 +10,10 @@ class Layout {
         $this->templateData = $templateData;
     }
     
-    public function addPluginData($pluginName, $pluginOutput, $pluginSuccess) {
+    public function addPluginData($pluginName, $pluginOutput, $pluginStatus, $pluginSuccess) {
         $this->templateData['plugins'][$pluginName] = [
             'output' => $pluginOutput,
+            'status' => $pluginStatus,
             'success' => $pluginSuccess
         ];
     }

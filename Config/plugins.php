@@ -54,10 +54,14 @@ return [
     ],
     'ImageInfo' => [
         'class' => Plugin\ImageInfo\ImageInfo::class,
+        'dependencies' => [
+            'HtmlImages',
+            'ListingImages',
+        ],
         'parameters' => [
             'imageSources' => [
                 'HtmlImages',
-				'ListingImages'
+				'ListingImages',
             ]
         ],
         'examples' => [

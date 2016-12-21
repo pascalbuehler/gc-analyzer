@@ -35,11 +35,11 @@ if(!$config) {
 
 // BASEDATA
 $url = $config['apiEndpoint'].'?'.http_build_query($config['apiParameters']);
-$pluginData = file_get_contents($url);
-if(!$pluginData) {
+$data = file_get_contents($url);
+if(!$data) {
     die('Api not reachable ('.$url.')');
 }
-$pluginData = json_decode($pluginData, true);
+$data = json_decode($data, true);
 
 // ENRICH BASEDATA
 // @todo
@@ -49,24 +49,38 @@ $layout = new Layout('analyze');
 
 // PLUGINS
 if(isset($config['plugins']) && is_array($config['plugins']) && count($config['plugins'])>0) {
+    $runnedPlugins = [];
     foreach($config['plugins'] as $pluginName => $pluginConfig) {
         // Load plugin
         if(!isset($pluginConfig['class'])) {
             continue;
         }
         $parameters = isset($pluginConfig['parameters']) ? $pluginConfig['parameters'] : [];
-        $plugin = new $pluginConfig['class']($pluginData, $parameters);
+        $plugin = new $pluginConfig['class']($data, $parameters);
         // Check plugin
         if(!in_array(PluginInterface::class, class_implements($plugin))) {
             continue;
         }
-        // Run plugin
-        $plugin->calculate();
-        $pluginData['plugins'][$pluginName] = $plugin->getResult();
-        $pluginOutput = $plugin->getOutput();
-        if($pluginOutput!==false) {
-            $layout->addPluginData($pluginName, $pluginOutput, $plugin->getSuccess());
+        // Check plugin dependencies
+        if(isset($pluginConfig['dependencies']) && is_array($pluginConfig['dependencies']) && count($pluginConfig['dependencies'])>0) {
+            foreach($pluginConfig['dependencies'] as $dependency) {
+                if(!in_array($dependency, $runnedPlugins)) {
+                    $plugin->setStatus(Plugin\AbstractPlugin::PLUGIN_STATUS_FAILED);
+                    continue;
+                }
+            }
         }
+        // Run plugin
+        if($plugin->getStatus()==Plugin\AbstractPlugin::PLUGIN_STATUS_OK) {
+            $plugin->calculate();
+            $data['plugins'][$pluginName] = $plugin->getResult();
+            $pluginOutput = $plugin->getOutput();
+        }
+        else {
+            $pluginOutput = '';
+        }
+        $layout->addPluginData($pluginName, $pluginOutput, $plugin->getStatus(), $plugin->getSuccess());
+        $runnedPlugins[] = $pluginName;
     }
 }
 
