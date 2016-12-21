@@ -6,18 +6,14 @@ class ListingImages extends \Plugin\AbstractPlugin {
 
     public function calculate() {
         foreach($this->parameters['fields'] as $field) {
-			foreach ($this->data[$field] as $image)
-			{
-				$this->images[$field][] = $image["Url"];
-			}
+            foreach ($this->data[$field] as $image)
+            {
+                $this->images[$field][] = $image['Url'];
+            }
         }
     }
 
     public function getResult() {
         return $this->images;
-    }
-
-    public function getOutput() {
-        return '';
     }
 }
