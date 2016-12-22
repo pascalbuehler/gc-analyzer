@@ -10,7 +10,6 @@ class ImageInfo extends \Plugin\AbstractPlugin {
 
             foreach ($imageListFields as $images) {
                 foreach ($images as $image) {
-                    var_dump($image);
                     $size = getimagesize($image['Url']);
 
                     $image['Source'] = $imageListName;
