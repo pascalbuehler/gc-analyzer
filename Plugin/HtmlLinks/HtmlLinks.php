@@ -19,7 +19,7 @@ class HtmlLinks extends \Plugin\AbstractPlugin {
             foreach ($elements as $element)
             {
                 $href = $element->getAttribute('href');
-                if (!isset($this->links[$field]) || !in_array($img, $this->links[$field]))
+                if (!isset($this->links[$field]) || !in_array($href, $this->links[$field]))
                 {
                     $this->links[$field][] = $href;
                 }
