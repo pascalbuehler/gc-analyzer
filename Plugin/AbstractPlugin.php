@@ -7,6 +7,7 @@ abstract class AbstractPlugin implements PluginInterface {
     
     protected $data = null;
     protected $parameters = [];
+   
     private $success = false;
     private $status = self::PLUGIN_STATUS_OK;
     

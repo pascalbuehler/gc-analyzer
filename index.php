@@ -56,7 +56,6 @@ switch($mode) {
             die('Api not reachable ('.$url.')');
         }
         $data = json_decode($data, true);
-var_dump($data);
 
         // ENRICH BASEDATA
         // @todo
