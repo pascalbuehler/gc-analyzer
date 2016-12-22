@@ -13,6 +13,7 @@ return [
         'examples' => [
             'GC40' => 'Geocache',
         ],
+        'author' => 'BlaiNnn'
     ],
     'HtmlSource' => [
         'class' => Plugin\HtmlSource\HtmlSource::class,
@@ -26,6 +27,7 @@ return [
         'examples' => [
             'GC40' => 'Geocache',
         ],
+        'author' => 'frigidor'
     ],
     'HtmlComment' => [
         'class' => Plugin\HtmlComment\HtmlComment::class,
@@ -39,6 +41,7 @@ return [
         'examples' => [
             'GC68P2Q' => 'Login',
         ],
+        'author' => 'frigidor'
     ],
     'HtmlLinks' => [
         'class' => Plugin\HtmlLinks\HtmlLinks::class,
@@ -52,6 +55,7 @@ return [
         'examples' => [
             'GC6WTA0' => 'Wetter-Anzeige (Nightcache)',
         ],
+        'author' => 'BlaiNnn'
     ],
     'HtmlImages' => [
         'class' => Plugin\HtmlImages\HtmlImages::class,
@@ -65,6 +69,7 @@ return [
         'examples' => [
             'GC2T6E3' => 'Whirlpool',
         ],
+        'author' => 'BlaiNnn'
     ],
 	'ListingImages' => [
         'class' => Plugin\ListingImages\ListingImages::class,
@@ -77,6 +82,7 @@ return [
         'examples' => [
             'GC56NXQ' => 'Hard Targets: Plan B',
         ],
+        'author' => 'BlaiNnn'
     ],
     'ImageInfo' => [
         'class' => Plugin\ImageInfo\ImageInfo::class,
@@ -90,9 +96,11 @@ return [
 				'ListingImages',
             ]
         ],
+        'description' => 'Extracts exif data from images',
         'examples' => [
             'GC111YR' => 'Spoiler',
             'GC65H6Q' => 'Hikiashi spricht NoSQL',
         ],
+        'author' => 'BlaiNnn'
     ],
 ];

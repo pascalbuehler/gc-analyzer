@@ -1,0 +1,39 @@
+<?php include('partials/header.phtml'); ?>
+
+        <div class="container">
+            <div class="row">
+<?php $i = 0; ?>
+<?php foreach($config['plugins'] as $pluginName => $pluginConfig): ?>
+                <div class="col-md-6">
+                    <div class="well">
+                        <h2 class="text-primary nomargin-top"><?= $pluginName ?> <small>by <?= $pluginConfig['author'] ?></small></h2>
+                        <p><?= $pluginConfig['description'] ?></p>
+<?php if(isset($pluginConfig['dependencies']) && is_array($pluginConfig['dependencies']) && count($pluginConfig['dependencies'])>0): ?>
+                        <h4>Dependencies:</h4>
+                            <ul class="list-unstyled">
+<?php foreach($pluginConfig['dependencies'] as $dependency): ?>
+                                <li><?= $dependency ?></li>
+<?php endforeach; ?>
+                            </ul>
+<?php endif; ?>
+<?php if(isset($pluginConfig['examples']) && is_array($pluginConfig['examples']) && count($pluginConfig['examples'])>0): ?>
+                        <h4>Examples:</h4>
+                            <ul class="list-unstyled">
+<?php foreach($pluginConfig['examples'] as $code => $name): ?>
+                                <li><a href="?code=<?= $code ?>" target="_blank"><?= $name ?></a></li>
+<?php endforeach; ?>
+                            </ul>
+<?php endif; ?>
+                    </div>
+                </div>
+<?php if($i>0 && $i%2==1): ?>
+            </div>
+            <div class="row">
+<?php endif; ?>
+<?php $i++; ?>
+<?php endforeach; ?>
+            </div>
+        </div>
+
+<?php include('partials/footer.phtml'); ?>
+
