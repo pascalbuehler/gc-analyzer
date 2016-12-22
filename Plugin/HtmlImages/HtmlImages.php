@@ -18,10 +18,15 @@ class HtmlImages extends \Plugin\AbstractPlugin {
 
             foreach ($elements as $element)
             {
-                $img = $element->getAttribute('src');
-                if (!isset($this->images[$field]) || !in_array($img, $this->images[$field]))
+                $url = $element->getAttribute('src');
+                if (!isset($this->images[$field]) || !in_array($url, $this->images[$field]))
                 {
-                    $this->images[$field][] = $img;
+                    $name = $element->getAttribute('title') ? $element->getAttribute('title') : ($element->getAttribute('alt') ? $element->getAttribute('alt') : '');
+                    $this->images[$field][] = [
+                        'Url' => $url,
+                        'Name' => $name,
+                        'Description' => '',
+                    ];
                 }
             }
         }

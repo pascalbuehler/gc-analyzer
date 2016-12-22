@@ -8,7 +8,11 @@ class ListingImages extends \Plugin\AbstractPlugin {
         foreach($this->parameters['fields'] as $field) {
             foreach ($this->data[$field] as $image)
             {
-                $this->images[$field][] = $image['Url'];
+                $this->images[$field][] = [
+                    'Url' => $image['Url'],
+                    'Name' => $image['Name'],
+                    'Description' => $image['Description'],
+                ];
             }
         }
     }

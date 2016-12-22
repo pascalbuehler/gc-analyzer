@@ -13,10 +13,17 @@
 <?php foreach($plugins as $pluginName => $pluginData): ?>
 <?php if(!isset($pluginData['output']) || $pluginData['output']===false || !strlen($pluginData['output'])>0) { continue; } ?>
             <div id="plugin-<?= $pluginName ?>" class="well">
-                <a name="plugin-<?= $pluginName ?>"></a>
-                <h2 class="text-primary nomargin-top">
-                    <?php if($pluginData['success']): ?><span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <?php endif; ?><?= $pluginName ?>
-                </h2>
+                <div class="row">
+                    <div class="col-xs-9 col-sm-10 col-md-11">
+                        <a name="plugin-<?= $pluginName ?>"></a>
+                        <h2 class="text-primary nomargin-top">
+                            <?php if($pluginData['success']): ?><span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <?php endif; ?><?= $pluginName ?>
+                        </h2>
+                    </div>
+                    <div class="col-xs-3 col-sm-2 col-md-1 text-right">
+                        <a href="#" role="button" class="btn btn-default">top</a>
+                    </div>
+                </div>
                 <div>
                     <?= $pluginData['output'] ?>
                 </div>
