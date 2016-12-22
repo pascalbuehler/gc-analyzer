@@ -1,6 +1,19 @@
 <?php
 
 return [
+    'ListingBasics' => [
+        'class' => Plugin\ListingBasics\ListingBasics::class,
+        'parameters' => [
+            'fields' => [
+                'ShortDescription',
+                'LongDescription',
+            ]
+        ],
+        'description' => 'Display the cache basics',
+        'examples' => [
+            'GC40' => 'Geocache',
+        ],
+    ],
     'HtmlSource' => [
         'class' => Plugin\HtmlSource\HtmlSource::class,
         'parameters' => [
@@ -25,6 +38,19 @@ return [
         'description' => 'Searches for comments in the HTML source code.',
         'examples' => [
             'GC68P2Q' => 'Login',
+        ],
+    ],
+    'HtmlLinks' => [
+        'class' => Plugin\HtmlLinks\HtmlLinks::class,
+        'parameters' => [
+            'fields' => [
+                'ShortDescription',
+                'LongDescription',
+            ]
+        ],
+        'description' => 'Searches for links in the HTML source code.',
+        'examples' => [
+            'GC6WTA0' => 'Wetter-Anzeige (Nightcache)',
         ],
     ],
     'HtmlImages' => [
