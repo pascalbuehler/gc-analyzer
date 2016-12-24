@@ -54,6 +54,7 @@ return [
         'description' => 'Searches for links in the HTML source code.',
         'examples' => [
             'GC6WTA0' => 'Wetter-Anzeige (Nightcache)',
+			'GC6G1P7' => 'Soundcheck! track two'
         ],
         'author' => 'BlaiNnn'
     ],
