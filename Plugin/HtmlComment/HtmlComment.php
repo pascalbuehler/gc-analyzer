@@ -10,7 +10,7 @@ class HtmlComment extends \Plugin\AbstractPlugin {
             preg_match_all('/<!--.*-->/', $this->data[$field], $matches);
             if(is_array($matches) && count($matches)>0) {
                 foreach($matches as $match) {
-                    if(isset($match[0])) {
+                    if(isset($match[0]) && trim($match[0]) != '') {
                         $this->comments[$field][] = $match[0];
                     }
                 }

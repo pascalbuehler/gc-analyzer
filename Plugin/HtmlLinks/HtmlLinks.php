@@ -1,8 +1,10 @@
 <?php
 namespace Plugin\HtmlLinks;
+use Plugin\ImageInfo as ImageInfoPlugin;
 
 class HtmlLinks extends \Plugin\AbstractPlugin {
     private $links = [];
+    private $images = [];
 
     public function calculate() {
         foreach($this->parameters['fields'] as $field) {
@@ -19,16 +21,37 @@ class HtmlLinks extends \Plugin\AbstractPlugin {
             foreach ($elements as $element)
             {
                 $href = $element->getAttribute('href');
-                if (!isset($this->links[$field]) || !in_array($href, $this->links[$field]))
+                if (!isset($this->links[$field]) || !array_key_exists($href, $this->links[$field]))
                 {
-                    $this->links[$field][] = $href;
+					$headers = get_headers($href, 1);
+
+                	$type = $headers["Content-Type"];
+					if (is_array($type)){
+						$type = $type[1];
+					}
+					$link = new LinkModel();
+					$link->url = $href;
+                    $link->contentType = $type;
+                    $this->links[$field][$href] = $link;
+
+					if (strpos($type, 'image') !== 'false') {
+	                    $imageModel = new ImageInfoPlugin\ImageModel();
+						$imageModel->url = $href;
+		                $imageModel->name = '';
+		                $imageModel->description = '';
+
+						$this->images[$field][] = $imageModel;
+					}
                 }
             }
         }
     }
 
     public function getResult() {
-        return $this->links;
+        return array(
+			'Links' => $this->links,
+			'Images' => $this->images,
+		);
     }
 
     public function getOutput() {
@@ -36,15 +59,15 @@ class HtmlLinks extends \Plugin\AbstractPlugin {
         foreach($this->links as $field => $links) {
             $source.= '<h4>'.$field.'</h4>'.PHP_EOL;
             foreach($links as $link) {
-                $source.= '<p><a href="'.$link.'" target="_blank">'.$link.'</a></p>'.PHP_EOL;
+                $source.= '<p><a href="'.$link->url.'" target="_blank">'.$link->url.'</a> '.$link->contentType.'</p>'.PHP_EOL;
 
-                if (strpos($link, 'geocheck.org') > -1)
+                if (strpos($link->url, 'geocheck.org') > -1)
                 {
-                    $source.= '<p>Image from geocheck.org: <img alt="GeoCheck.org" src="http://geocheck.org/geocheck_small.php?gid='.substr($link, strpos($link, 'gid=')+4).'" /></p>';
+                    $source.= '<p>Image from geocheck.org: <img alt="GeoCheck.org" src="http://geocheck.org/geocheck_small.php?gid='.substr($link->url, strpos($link->url, 'gid=')+4).'" /></p>';
                 }
-                if (strpos($link, 'geochecker.com') > -1 && strpos($link, 'visitcount') <= 0)
+                if (strpos($link->url, 'geochecker.com') > -1 && strpos($link->url, 'visitcount') <= 0)
                 {
-                    $source.= '<p>With count of geochecker.com: <a href="'.$link.'&visitcount=1" target="blank">'.$link.'&visitcount=1</a></p>';
+                    $source.= '<p>With count of geochecker.com: <a href="'.$link->url.'&visitcount=1" target="blank">'.$link->url.'&visitcount=1</a></p>';
                 }
             }
         }

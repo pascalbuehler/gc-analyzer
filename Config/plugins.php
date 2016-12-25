@@ -51,9 +51,11 @@ return [
                 'LongDescription',
             ]
         ],
-        'description' => 'Searches for links in the HTML source code.',
+        'description' => 'Searches for links in the HTML source code. Prints additional info, if link is a geochecker-url. Checks if the link is pointing to an image.',
         'examples' => [
             'GC6WTA0' => 'Wetter-Anzeige (Nightcache)',
+			'GC6G1P7' => 'Soundcheck! track two',
+			'GC549K3' => 'Kulturgut Kirchenlied RG 247',
         ],
         'author' => 'BlaiNnn'
     ],
@@ -89,11 +91,13 @@ return [
         'dependencies' => [
             'HtmlImages',
             'ListingImages',
+			'HtmlLinks',
         ],
         'parameters' => [
             'imageSources' => [
                 'HtmlImages',
 				'ListingImages',
+                'HtmlLinks::Images',
             ]
         ],
         'description' => 'Extracts exif data from images',

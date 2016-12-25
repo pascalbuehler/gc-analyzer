@@ -1,5 +1,6 @@
 <?php
 namespace Plugin\HtmlImages;
+use Plugin\ImageInfo as ImageInfoPlugin;
 
 class HtmlImages extends \Plugin\AbstractPlugin {
     private $images = [];
@@ -22,11 +23,13 @@ class HtmlImages extends \Plugin\AbstractPlugin {
                 if (!isset($this->images[$field]) || !in_array($url, $this->images[$field]))
                 {
                     $name = $element->getAttribute('title') ? $element->getAttribute('title') : ($element->getAttribute('alt') ? $element->getAttribute('alt') : '');
-                    $this->images[$field][] = [
-                        'Url' => $url,
-                        'Name' => $name,
-                        'Description' => '',
-                    ];
+
+					$imageModel = new ImageInfoPlugin\ImageModel();
+					$imageModel->url = $url;
+	                $imageModel->name = $name;
+	                $imageModel->description = '';
+
+	                $this->images[$field][] = $imageModel;
                 }
             }
         }

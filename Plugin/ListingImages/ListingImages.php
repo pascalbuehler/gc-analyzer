@@ -1,5 +1,6 @@
 <?php
 namespace Plugin\ListingImages;
+use Plugin\ImageInfo as ImageInfoPlugin;
 
 class ListingImages extends \Plugin\AbstractPlugin {
     private $images = [];
@@ -8,11 +9,12 @@ class ListingImages extends \Plugin\AbstractPlugin {
         foreach($this->parameters['fields'] as $field) {
             foreach ($this->data[$field] as $image)
             {
-                $this->images[$field][] = [
-                    'Url' => $image['Url'],
-                    'Name' => $image['Name'],
-                    'Description' => $image['Description'],
-                ];
+				$imageModel = new ImageInfoPlugin\ImageModel();
+				$imageModel->url = $image['Url'];
+                $imageModel->name = $image['Name'];
+                $imageModel->description = $image['Description'];
+
+                $this->images[$field][] = $imageModel;
             }
         }
     }
