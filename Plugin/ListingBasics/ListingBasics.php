@@ -14,7 +14,7 @@ class ListingBasics extends \Plugin\AbstractPlugin {
     public function getOutput() {
 
         $source = '';
-
+//var_dump($this->data);
         $source .= '<div class="row">'.PHP_EOL;
         $source .= '  <div class="col-lg-10 col-md-9 col-xs-8">'.PHP_EOL;
         $source .= '    <h3><a href="'.$this->data['Url'].'" target="_blank"><img src="'.$this->data['CacheType']['ImageURL'].'" alt="'.$this->data['CacheType']['GeocacheTypeName'].'" style="padding-right: 10px">'.$this->data['Name'].'</a></h3>'.PHP_EOL;
@@ -23,16 +23,13 @@ class ListingBasics extends \Plugin\AbstractPlugin {
         $source .= '    <h3>'.$this->data['Code'].'</h3>'.PHP_EOL;
         $source .= '  </div>'.PHP_EOL;
         $source .= '</div>'.PHP_EOL;
-        $source .= '<p>Owner: '.$this->data['Owner']['UserName'].'</p>'.PHP_EOL;
-        $source .= '<p>Owner HideCount: '.$this->data['Owner']['HideCount'].'</p>'.PHP_EOL;
-        $source .= '<p>Owner FindCount: '.$this->data['Owner']['FindCount'].'</p>'.PHP_EOL;
+        $source .= '<p>Owner: '.$this->data['Owner']['UserName'].' (Hides: '.$this->data['Owner']['HideCount'].' / Finds: '.$this->data['Owner']['FindCount'].')</p>'.PHP_EOL;
         $source .= '<p>PlacedBy: '.$this->data['PlacedBy'].'</p>'.PHP_EOL;
-        $source .= '<p>ContainerTypeName: '.$this->data['ContainerType']['ContainerTypeName'].'</p>'.PHP_EOL;
-        $source .= '<p>Country: '.$this->data['Country'].'</p>'.PHP_EOL;
-        $source .= '<p>Difficulty: '.$this->data['Difficulty'].'</p>'.PHP_EOL;
-        $source .= '<p>Terrain: '.$this->data['Terrain'].'</p>'.PHP_EOL;
-        $source .= '<p>Hints: '.$this->data['EncodedHints'].'</p>'.PHP_EOL;
+        $source .= '<p>Size: <img src="https://www.geocaching.com/images/icons/container/'.$this->data['ContainerType']['ContainerTypeName'].'.gif" /> '.$this->data['ContainerType']['ContainerTypeName'].'</p>'.PHP_EOL;
+        $source .= '<p>Terrain: <img src="https://www.geocaching.com/images/stars/stars'.str_replace('.', '_', $this->data['Terrain']).'.gif" /> / Difficulty: <img src="https://www.geocaching.com/images/stars/stars'.str_replace('.', '_', $this->data['Difficulty']).'.gif" /></p>'.PHP_EOL;
+        $source .= '<p>Hints:<br />'.str_replace("\n", '<br />', $this->data['EncodedHints']).'</p>'.PHP_EOL;
         $source .= '<p>FavoritePoints: '.$this->data['FavoritePoints'].'</p>'.PHP_EOL;
+		$source .= '<p>Country / State: '.$this->data['Country'].' '.$this->data['State'].'</p>'.PHP_EOL;
         $source .= '<p>Coords: '.$this->convertToReadableCoords($this->data['Latitude'], $this->data['Longitude']).'</p>'.PHP_EOL;
 
 		if (isset($this->data['AdditionalWaypoints']) && count($this->data['AdditionalWaypoints']) > 0)

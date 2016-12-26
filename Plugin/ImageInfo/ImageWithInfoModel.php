@@ -6,4 +6,5 @@ class ImageWithInfoModel extends ImageModel {
 	public $height;
 	public $mime;
 	public $exif;
+	public $comments;
 }

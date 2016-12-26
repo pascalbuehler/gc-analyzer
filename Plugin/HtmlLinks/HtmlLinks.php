@@ -23,12 +23,9 @@ class HtmlLinks extends \Plugin\AbstractPlugin {
                 $href = $element->getAttribute('href');
                 if (!isset($this->links[$field]) || !array_key_exists($href, $this->links[$field]))
                 {
-					$headers = get_headers($href, 1);
-
-                	$type = $headers["Content-Type"];
-					if (is_array($type)){
-						$type = $type[1];
-					}
+					$headers = array();
+	
+					$type = $this->getHeaderContentType($href);
 					$link = new LinkModel();
 					$link->url = $href;
                     $link->contentType = $type;
@@ -47,6 +44,22 @@ class HtmlLinks extends \Plugin\AbstractPlugin {
         }
     }
 
+	private function getHeaderContentType($href) {
+		// get headers, if not a checker-url
+		if (!(strpos($href, 'geocheck.org') > -1 || strpos($href, 'geochecker.com') > -1))
+		{
+			$headers = get_headers($href, 1);
+
+			$type = $headers["Content-Type"];
+			if (is_array($type)){
+				$type = $type[1];
+			}
+			return $type;
+		}
+		
+		return '';
+	}
+	
     public function getResult() {
         return array(
 			'Links' => $this->links,
