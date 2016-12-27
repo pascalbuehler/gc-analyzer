@@ -6,47 +6,47 @@ class ImageInfo extends \Plugin\AbstractPlugin {
 
     public function calculate() {
         foreach($this->parameters['imageSources'] as $imageListNameRaw) {
-			$explode = explode('::', $imageListNameRaw);
-			$imageListName = $explode[0];
+            $explode = explode('::', $imageListNameRaw);
+            $imageListName = $explode[0];
 
-			if (isset($explode[1]))
-			{
-				$imageListFields = $this->data['plugins'][$imageListName][$explode[1]];
+            if (isset($explode[1]))
+            {
+                $imageListFields = $this->data['plugins'][$imageListName][$explode[1]];
 
-			} else {
+            } else {
                 $imageListFields = $this->data['plugins'][$imageListName];
-			}
+            }
 
             foreach ($imageListFields as $images) {
                 foreach ($images as $imageModel) {
-					
-					$url = $imageModel->url;
+                    
+                    $url = $imageModel->url;
 
-					if (!array_key_exists($url, $this->imagesWithInfo)) {
+                    if (!array_key_exists($url, $this->imagesWithInfo)) {
 
-	                    $size = getimagesize($url);
-						if ($size)
-						{
-							$imageWithInfoModel = new ImageWithInfoModel();
+                        $size = getimagesize($url);
+                        if ($size)
+                        {
+                            $imageWithInfoModel = new \Model\ImageWithInfoModel();
                             $imageWithInfoModel->url = $imageModel->url;
                             $imageWithInfoModel->name = $imageModel->name;
                             $imageWithInfoModel->description = $imageModel->description;
 
                             $imageWithInfoModel->source = $imageListName;
-		                    $imageWithInfoModel->width = $size[0];
-		                    $imageWithInfoModel->height = $size[1];
-		                    $imageWithInfoModel->mime = $size['mime'];
+                            $imageWithInfoModel->width = $size[0];
+                            $imageWithInfoModel->height = $size[1];
+                            $imageWithInfoModel->mime = $size['mime'];
 
-		                    if ($size[2] == IMG_JPEG) {
-								$exif = exif_read_data($imageModel->url, 'FILE', true);
-		                        if ($exif != null && $exif != '') {
-		                            $imageWithInfoModel->exif = $exif;
-		                            $this->setSuccess(true);
-		                        }
-							}
+                            if ($size[2] == IMG_JPEG) {
+                                $exif = exif_read_data($imageModel->url, 'FILE', true);
+                                if ($exif != null && $exif != '') {
+                                    $imageWithInfoModel->exif = $exif;
+                                    $this->setSuccess(true);
+                                }
+                            }
 
-	                        $this->imagesWithInfo[$url] = $imageWithInfoModel;
-						}
+                            $this->imagesWithInfo[$url] = $imageWithInfoModel;
+                        }
                     }
                     else {
                         //image exists in the list, add current source info
@@ -61,7 +61,7 @@ class ImageInfo extends \Plugin\AbstractPlugin {
                             }
                         }
 
-						if($imageModel->name != null && strlen($imageModel->description) > 0) {
+                        if($imageModel->name != null && strlen($imageModel->description) > 0) {
                             if($this->imagesWithInfo[$url]->description != null && strlen($this->imagesWithInfo[$url]->description)>0) {
                                 $this->imagesWithInfo[$url]->description.= ' / '.$imageModel->description;
                             }
@@ -82,9 +82,9 @@ class ImageInfo extends \Plugin\AbstractPlugin {
     public function getOutput() {
         $source = '';
         if(count($this->imagesWithInfo)>0)
-		{
+        {
             foreach($this->imagesWithInfo as $imageWithInfo)
-			{
+            {
                 $source.= '<div class="row">'.PHP_EOL;
                 $source.= '  <div class="col-lg-6 limit-img">'.PHP_EOL;
                 $source.= '    <h4>Image from '.$imageWithInfo->source.'</h4>'.PHP_EOL;
@@ -113,7 +113,7 @@ class ImageInfo extends \Plugin\AbstractPlugin {
                     $source.= '    <pre class="pre-scrollable">'.print_r($imageWithInfo->exif, true).'</pre>'.PHP_EOL;
                     $source.= '  </div>'.PHP_EOL;
                 }
-				if ($imageWithInfo->comments != null){
+                if ($imageWithInfo->comments != null){
                     $source.= '  <div class="col-lg-6">'.PHP_EOL;
                     $source.= '    <h4>EXIF Comments</h4>'.PHP_EOL;
                     $source.= '    <pre class="pre-scrollable">'.print_r($imageWithInfo->comments, true).'</pre>'.PHP_EOL;

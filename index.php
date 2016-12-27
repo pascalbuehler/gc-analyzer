@@ -29,10 +29,6 @@ $env = getenv('APPLICATION_ENV') ?: 'dist';
 // MODE
 $code = filter_input(INPUT_GET, 'code', FILTER_SANITIZE_STRING);
 if($code) {
-    if(strpos($code, 'https://coord.info/') != -1)
-    {
-        $_GET['code'] = basename($code);
-    }
     $mode = 'analyze';
 }
 else {

@@ -1,6 +1,5 @@
 <?php
 namespace Plugin\HtmlImages;
-use Plugin\ImageInfo as ImageInfoPlugin;
 
 class HtmlImages extends \Plugin\AbstractPlugin {
     private $images = [];
@@ -21,13 +20,13 @@ class HtmlImages extends \Plugin\AbstractPlugin {
             {
                 $url = $element->getAttribute('src');
                 
-                if (!(strpos($url, 'geocheck.org') > -1 || strpos($url, 'geochecker.com') > -1))
+                if (!(\Helper\CheckerHelper::isCheckerUrl($url))
                 {
                     if (!isset($this->images[$field]) || !in_array($url, $this->images[$field]))
                     {
                         $name = $element->getAttribute('title') ? $element->getAttribute('title') : ($element->getAttribute('alt') ? $element->getAttribute('alt') : '');
 
-                        $imageModel = new ImageInfoPlugin\ImageModel();
+                        $imageModel = new \Model\ImageModel();
                         $imageModel->url = $url;
                         $imageModel->name = $name;
                         $imageModel->description = '';

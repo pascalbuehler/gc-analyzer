@@ -1,6 +1,7 @@
 <?php
-namespace Plugin\HtmlLinks;
+namespace Model;
+
 class LinkModel {
-	public $url;
+    public $url;
     public $contentType;
 }

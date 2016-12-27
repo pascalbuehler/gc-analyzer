@@ -1,6 +1,5 @@
 <?php
 namespace Plugin\HtmlLinks;
-use Plugin\ImageInfo as ImageInfoPlugin;
 
 class HtmlLinks extends \Plugin\AbstractPlugin {
     private $links = [];
@@ -23,16 +22,14 @@ class HtmlLinks extends \Plugin\AbstractPlugin {
                 $href = $element->getAttribute('href');
                 if (!isset($this->links[$field]) || !array_key_exists($href, $this->links[$field]))
                 {
-                    $headers = array();
-    
                     $type = $this->getHeaderContentType($href);
-                    $link = new LinkModel();
+                    $link = new \Model\LinkModel();
                     $link->url = $href;
                     $link->contentType = $type;
                     $this->links[$field][$href] = $link;
 
                     if (strpos($type, 'image') !== 'false') {
-                        $imageModel = new ImageInfoPlugin\ImageModel();
+                        $imageModel = new \Model\ImageModel();
                         $imageModel->url = $href;
                         $imageModel->name = '';
                         $imageModel->description = '';
@@ -46,18 +43,15 @@ class HtmlLinks extends \Plugin\AbstractPlugin {
 
     private function getHeaderContentType($href) {
         // get headers, if not a checker-url
-        if (!(strpos($href, 'geocheck.org') > -1 || strpos($href, 'geochecker.com') > -1))
-        {
-            $headers = get_headers($href, 1);
-
-            $type = $headers["Content-Type"];
-            if (is_array($type)){
-                $type = $type[1];
-            }
-            return $type;
-        }
+        if (\Helper\CheckerHelper::isCheckerUrl($href)) return '';
         
-        return '';
+        $headers = get_headers($href, 1);
+
+        $type = $headers["Content-Type"];
+        if (is_array($type)){
+            $type = $type[1];
+        }
+        return $type;
     }
     
     public function getResult() {

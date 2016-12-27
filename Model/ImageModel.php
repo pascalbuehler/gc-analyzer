@@ -1,8 +1,8 @@
 <?php
-namespace Plugin\ImageInfo;
+namespace Model;
 
 class ImageModel {
-	public $url;
+    public $url;
     public $name;
     public $description;
 }
