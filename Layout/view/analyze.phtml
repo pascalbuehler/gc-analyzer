@@ -3,7 +3,7 @@
         <div class="container">
             <div class="well">
 <?php foreach($plugins as $pluginName => $pluginData): ?>
-                <a href="#plugin-<?= $pluginName ?>" class="btn <?= $pluginData['status']==\Plugin\AbstractPlugin::PLUGIN_STATUS_FAILED ? 'btn-danger' : 'btn-primary' ?>" role="button"<?= !isset($pluginData['output']) || $pluginData['output']===false || !strlen($pluginData['output'])>0 ? ' disabled' : '' ?>>
+                <a href="#plugin-<?= $pluginName ?>" class="btn btn-margin-bottom <?= $pluginData['status']==\Plugin\AbstractPlugin::PLUGIN_STATUS_FAILED ? 'btn-danger' : 'btn-primary' ?>" role="button"<?= !isset($pluginData['output']) || $pluginData['output']===false || !strlen($pluginData['output'])>0 ? ' disabled' : '' ?>>
                     <?php if($pluginData['success']): ?><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <?php endif; ?>
                     <?= $pluginName ?>
                 </a>

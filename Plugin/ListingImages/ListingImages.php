@@ -1,6 +1,5 @@
 <?php
 namespace Plugin\ListingImages;
-use Plugin\ImageInfo as ImageInfoPlugin;
 
 class ListingImages extends \Plugin\AbstractPlugin {
     private $images = [];

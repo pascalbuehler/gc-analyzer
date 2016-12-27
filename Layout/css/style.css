@@ -18,3 +18,7 @@ pre {
     width: auto !important;
     max-width: 100%;
 }
+
+.btn-margin-bottom {
+    margin-bottom: 10px;
+}

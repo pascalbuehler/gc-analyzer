@@ -1,6 +1,5 @@
 <?php
 namespace Plugin\HtmlImages;
-use Plugin\ImageInfo as ImageInfoPlugin;
 
 class HtmlImages extends \Plugin\AbstractPlugin {
     private $images = [];

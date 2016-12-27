@@ -1,6 +1,5 @@
 <?php
 namespace Plugin\HtmlLinks;
-use Plugin\ImageInfo as ImageInfoPlugin;
 
 class HtmlLinks extends \Plugin\AbstractPlugin {
     private $links = [];
