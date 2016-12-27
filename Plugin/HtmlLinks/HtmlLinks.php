@@ -1,6 +1,5 @@
 <?php
 namespace Plugin\HtmlLinks;
-use Plugin\ImageInfo as ImageInfoPlugin;
 
 class HtmlLinks extends \Plugin\AbstractPlugin {
     private $links = [];
@@ -44,18 +43,15 @@ class HtmlLinks extends \Plugin\AbstractPlugin {
 
     private function getHeaderContentType($href) {
         // get headers, if not a checker-url
-        if (!(strpos($href, 'geocheck.org') > -1 || strpos($href, 'geochecker.com') > -1))
-        {
-            $headers = get_headers($href, 1);
-
-            $type = $headers["Content-Type"];
-            if (is_array($type)){
-                $type = $type[1];
-            }
-            return $type;
-        }
+        if (\Helper\CheckerHelper::isCheckerUrl($href)) return '';
         
-        return '';
+        $headers = get_headers($href, 1);
+
+        $type = $headers["Content-Type"];
+        if (is_array($type)){
+            $type = $type[1];
+        }
+        return $type;
     }
     
     public function getResult() {

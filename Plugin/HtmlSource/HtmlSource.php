@@ -21,9 +21,9 @@ class HtmlSource extends \Plugin\AbstractPlugin {
     public function getOutput() {
         $source = '';
         foreach($this->html as $field => $html)
-		{
+        {
             if(strlen($html)>0)
-			{
+            {
                 $source.= '<h4>'.$field.'</h4>'.PHP_EOL;
                 $source.= '<div class="row">'.PHP_EOL;
                 $source.= '  <div class="col-lg-6 limit-img">'.PHP_EOL;

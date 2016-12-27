@@ -2,9 +2,9 @@
 namespace Model;
 
 class YoutubeResultModel {
-	public $title;
-	public $description;
+    public $title;
+    public $description;
     public $channel;
-	public $videoId;
-	public $thumbnail;
+    public $videoId;
+    public $thumbnail;
 }
