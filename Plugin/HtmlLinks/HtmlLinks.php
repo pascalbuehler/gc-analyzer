@@ -23,57 +23,57 @@ class HtmlLinks extends \Plugin\AbstractPlugin {
                 $href = $element->getAttribute('href');
                 if (!isset($this->links[$field]) || !array_key_exists($href, $this->links[$field]))
                 {
-					$headers = array();
-	
-					$type = $this->getHeaderContentType($href);
-					$link = new LinkModel();
-					$link->url = $href;
+                    $headers = array();
+    
+                    $type = $this->getHeaderContentType($href);
+                    $link = new LinkModel();
+                    $link->url = $href;
                     $link->contentType = $type;
                     $this->links[$field][$href] = $link;
 
-					if (strpos($type, 'image') !== 'false') {
-	                    $imageModel = new ImageInfoPlugin\ImageModel();
-						$imageModel->url = $href;
-		                $imageModel->name = '';
-		                $imageModel->description = '';
+                    if (strpos($type, 'image') !== 'false') {
+                        $imageModel = new ImageInfoPlugin\ImageModel();
+                        $imageModel->url = $href;
+                        $imageModel->name = '';
+                        $imageModel->description = '';
 
-						$this->images[$field][] = $imageModel;
-					}
+                        $this->images[$field][] = $imageModel;
+                    }
                 }
             }
         }
     }
 
-	private function getHeaderContentType($href) {
-		// get headers, if not a checker-url
-		if (!(strpos($href, 'geocheck.org') > -1 || strpos($href, 'geochecker.com') > -1))
-		{
-			$headers = get_headers($href, 1);
+    private function getHeaderContentType($href) {
+        // get headers, if not a checker-url
+        if (!(strpos($href, 'geocheck.org') > -1 || strpos($href, 'geochecker.com') > -1))
+        {
+            $headers = get_headers($href, 1);
 
-			$type = $headers["Content-Type"];
-			if (is_array($type)){
-				$type = $type[1];
-			}
-			return $type;
-		}
-		
-		return '';
-	}
-	
+            $type = $headers["Content-Type"];
+            if (is_array($type)){
+                $type = $type[1];
+            }
+            return $type;
+        }
+        
+        return '';
+    }
+    
     public function getResult() {
         return array(
-			'Links' => $this->links,
-			'Images' => $this->images,
-		);
+            'Links' => $this->links,
+            'Images' => $this->images,
+        );
     }
 
     public function getOutput() {
         $source = '';
         foreach($this->links as $field => $links)
-		{
+        {
             $source.= '<h4>'.$field.'</h4>'.PHP_EOL;
             foreach($links as $link)
-			{
+            {
                 $source.= '<p><a href="'.$link->url.'" target="_blank">'.$link->url.'</a> '.$link->contentType.'</p>'.PHP_EOL;
 
                 if (strpos($link->url, 'geocheck.org') > -1)
