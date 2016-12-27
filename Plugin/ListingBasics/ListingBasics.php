@@ -17,7 +17,7 @@ class ListingBasics extends \Plugin\AbstractPlugin {
 
         $source .= '<div class="row">'.PHP_EOL;
         $source .= '  <div class="col-lg-10 col-md-9 col-xs-8">'.PHP_EOL;
-        $source .= '    <h3><a href="'.$this->data['Url'].'" target="_blank"><img src="'.$this->data['CacheType']['ImageURL'].'" alt="'.$this->data['CacheType']['GeocacheTypeName'].'" style="padding-right: 10px">'.$this->data['Name'].'</a></h3>'.PHP_EOL;
+        $source .= '    <h3></span><a href="'.$this->data['Url'].'" target="_blank"><img src="'.$this->data['CacheType']['ImageURL'].'" alt="'.$this->data['CacheType']['GeocacheTypeName'].'" style="padding-right: 10px">'.$this->data['Name'].'</a></h3>'.PHP_EOL;
         $source .= '  </div>'.PHP_EOL;
         $source .= '  <div class="col-lg-2 col-md-3 col-xs-4 text-right">'.PHP_EOL;
         $source .= '    <h3>'.$this->data['Code'].'</h3>'.PHP_EOL;
@@ -62,9 +62,9 @@ class ListingBasics extends \Plugin\AbstractPlugin {
     {
         $ret = 'N '.sprintf('%02d', (int)$lat).'°'.sprintf('%06.3f', round((($lat - (int)$lat) * 60), 3)).' '.'E '.sprintf('%03d', (int)$long).'°'.sprintf('%06.3f', round((($long - (int)$long) * 60), 3));
 
-        $ret .= ' <a href="http://www.openstreetmap.org/?mlat='.$lat.'&mlon=%20'.$long.'&zoom=17&layers=M" target="_blank">OSM</a>';
-        $ret .= ' <a href="http://maps.google.com/maps?q=loc:'.$lat.','.$long.'" target="_blank">Google</a>';
-        $ret .= ' <a href="https://tools.retorte.ch/map/?wgs84='.$lat.','.$long.'&zoom=18" target="_blank">Retorte</a>';
+        $ret .= ' <a href="http://www.openstreetmap.org/?mlat='.$lat.'&mlon=%20'.$long.'&zoom=17&layers=M" target="_blank"><span class="glyphicon glyphicon-map-marker"></span>OSM</a>';
+        $ret .= ' <a href="http://maps.google.com/maps?q=loc:'.$lat.','.$long.'" target="_blank"><span class="glyphicon glyphicon-map-marker"></span>Google</a>';
+        $ret .= ' <a href="https://tools.retorte.ch/map/?wgs84='.$lat.','.$long.'&zoom=18" target="_blank"><span class="glyphicon glyphicon-map-marker"></span>Retorte</a>';
 
         return $ret;
     }
