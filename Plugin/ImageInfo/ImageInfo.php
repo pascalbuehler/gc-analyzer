@@ -38,12 +38,12 @@ class ImageInfo extends \Plugin\AbstractPlugin {
 		                    $imageWithInfoModel->mime = $size['mime'];
 
 		                    if ($size[2] == IMG_JPEG) {
-		                        $exif = exif_read_data($imageModel->url, 'IFD0');
+								$exif = exif_read_data($imageModel->url, 'FILE', true);
 		                        if ($exif != null && $exif != '') {
 		                            $imageWithInfoModel->exif = $exif;
 		                            $this->setSuccess(true);
 		                        }
-		                    }
+							}
 
 	                        $this->imagesWithInfo[$url] = $imageWithInfoModel;
 						}
@@ -109,6 +109,12 @@ class ImageInfo extends \Plugin\AbstractPlugin {
                     $source.= '  <div class="col-lg-6">'.PHP_EOL;
                     $source.= '    <h4>EXIF</h4>'.PHP_EOL;
                     $source.= '    <pre class="pre-scrollable">'.print_r($imageWithInfo->exif, true).'</pre>'.PHP_EOL;
+                    $source.= '  </div>'.PHP_EOL;
+                }
+				if ($imageWithInfo->comments != null){
+                    $source.= '  <div class="col-lg-6">'.PHP_EOL;
+                    $source.= '    <h4>EXIF Comments</h4>'.PHP_EOL;
+                    $source.= '    <pre class="pre-scrollable">'.print_r($imageWithInfo->comments, true).'</pre>'.PHP_EOL;
                     $source.= '  </div>'.PHP_EOL;
                 }
                 $source.= '</div>'.PHP_EOL;
