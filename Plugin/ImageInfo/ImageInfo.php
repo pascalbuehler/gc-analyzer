@@ -12,8 +12,7 @@ class ImageInfo extends \Plugin\AbstractPlugin {
             if (isset($explode[1]))
             {
                 $imageListFields = $this->data['plugins'][$imageListName][$explode[1]];
-            }
-            else {
+            } else {
                 $imageListFields = $this->data['plugins'][$imageListName];
             }
 
