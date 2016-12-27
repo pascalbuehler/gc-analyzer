@@ -69,9 +69,11 @@ class HtmlLinks extends \Plugin\AbstractPlugin {
 
     public function getOutput() {
         $source = '';
-        foreach($this->links as $field => $links) {
+        foreach($this->links as $field => $links)
+		{
             $source.= '<h4>'.$field.'</h4>'.PHP_EOL;
-            foreach($links as $link) {
+            foreach($links as $link)
+			{
                 $source.= '<p><a href="'.$link->url.'" target="_blank">'.$link->url.'</a> '.$link->contentType.'</p>'.PHP_EOL;
 
                 if (strpos($link->url, 'geocheck.org') > -1)
