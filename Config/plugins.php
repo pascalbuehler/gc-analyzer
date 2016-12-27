@@ -107,4 +107,14 @@ return [
         ],
         'author' => 'BlaiNnn'
     ],
+    'YoutubeSearch' => [
+        'class' => Plugin\YoutubeSearch\YoutubeSearch::class,
+        'parameters' => [
+            'fields' => [
+                'Code',
+            ]
+        ],
+        'description' => 'Searches for Youtube-Videos',
+        'author' => 'BlaiNnn'
+    ],
 ];

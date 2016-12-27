@@ -81,8 +81,10 @@ class ImageInfo extends \Plugin\AbstractPlugin {
 
     public function getOutput() {
         $source = '';
-        if(count($this->imagesWithInfo)>0) {
-            foreach($this->imagesWithInfo as $imageWithInfo) {
+        if(count($this->imagesWithInfo)>0)
+		{
+            foreach($this->imagesWithInfo as $imageWithInfo)
+			{
                 $source.= '<div class="row">'.PHP_EOL;
                 $source.= '  <div class="col-lg-6 limit-img">'.PHP_EOL;
                 $source.= '    <h4>Image from '.$imageWithInfo->source.'</h4>'.PHP_EOL;
