@@ -2,6 +2,17 @@
 
         <div class="container">
             <div class="row">
+                <div class="col-md-6">
+                        <div class="well">
+                            <h2 class="text-primary nomargin-top">Start Analyze</h2>
+                            <form class="form-search" method="GET">
+                                <input type="text" name="code" class="input-medium search-query" placeholder="GC40">
+                                <button type="submit" class="btn">Analyze</button>
+                            </form>
+                        </div>
+                </div>
+            </div>
+            <div class="row">
 <?php $i = 0; ?>
 <?php foreach($config['plugins'] as $pluginName => $pluginConfig): ?>
                 <div class="col-md-6">

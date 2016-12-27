@@ -20,16 +20,20 @@ class HtmlImages extends \Plugin\AbstractPlugin {
             foreach ($elements as $element)
             {
                 $url = $element->getAttribute('src');
-                if (!isset($this->images[$field]) || !in_array($url, $this->images[$field]))
+                
+                if (!(strpos($url, 'geocheck.org') > -1 || strpos($url, 'geochecker.com') > -1))
                 {
-                    $name = $element->getAttribute('title') ? $element->getAttribute('title') : ($element->getAttribute('alt') ? $element->getAttribute('alt') : '');
+                    if (!isset($this->images[$field]) || !in_array($url, $this->images[$field]))
+                    {
+                        $name = $element->getAttribute('title') ? $element->getAttribute('title') : ($element->getAttribute('alt') ? $element->getAttribute('alt') : '');
 
-					$imageModel = new ImageInfoPlugin\ImageModel();
-					$imageModel->url = $url;
-	                $imageModel->name = $name;
-	                $imageModel->description = '';
+                        $imageModel = new ImageInfoPlugin\ImageModel();
+                        $imageModel->url = $url;
+                        $imageModel->name = $name;
+                        $imageModel->description = '';
 
-	                $this->images[$field][] = $imageModel;
+                        $this->images[$field][] = $imageModel;
+                    }
                 }
             }
         }
