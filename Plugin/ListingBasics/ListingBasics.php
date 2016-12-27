@@ -14,7 +14,7 @@ class ListingBasics extends \Plugin\AbstractPlugin {
     public function getOutput() {
 
         $source = '';
-//var_dump($this->data);
+
         $source .= '<div class="row">'.PHP_EOL;
         $source .= '  <div class="col-lg-10 col-md-9 col-xs-8">'.PHP_EOL;
         $source .= '    <h3><a href="'.$this->data['Url'].'" target="_blank"><img src="'.$this->data['CacheType']['ImageURL'].'" alt="'.$this->data['CacheType']['GeocacheTypeName'].'" style="padding-right: 10px">'.$this->data['Name'].'</a></h3>'.PHP_EOL;

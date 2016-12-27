@@ -20,7 +20,7 @@ class HtmlImages extends \Plugin\AbstractPlugin {
             {
                 $url = $element->getAttribute('src');
                 
-                if (!(strpos($url, 'geocheck.org') > -1 || strpos($url, 'geochecker.com') > -1))
+                if (!(\Helper\CheckerHelper::isCheckerUrl($url)))
                 {
                     if (!isset($this->images[$field]) || !in_array($url, $this->images[$field]))
                     {
