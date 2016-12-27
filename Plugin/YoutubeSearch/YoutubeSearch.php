@@ -19,7 +19,7 @@ class YoutubeSearch extends \Plugin\AbstractPlugin {
 
 			foreach ($json->items as $item)
 			{
-				$youtubeResultModel = new YoutubeResultModel();
+				$youtubeResultModel = new \Model\YoutubeResultModel();
 				
 				$youtubeResultModel->videoId = $item->id->videoId;
 				$youtubeResultModel->title = $item->snippet->title;

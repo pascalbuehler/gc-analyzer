@@ -27,7 +27,7 @@ class HtmlImages extends \Plugin\AbstractPlugin {
                     {
                         $name = $element->getAttribute('title') ? $element->getAttribute('title') : ($element->getAttribute('alt') ? $element->getAttribute('alt') : '');
 
-                        $imageModel = new ImageInfoPlugin\ImageModel();
+                        $imageModel = new \Model\ImageModel();
                         $imageModel->url = $url;
                         $imageModel->name = $name;
                         $imageModel->description = '';

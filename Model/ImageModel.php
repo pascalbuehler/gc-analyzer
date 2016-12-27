@@ -1,5 +1,5 @@
 <?php
-namespace Plugin\ImageInfo;
+namespace Model;
 
 class ImageModel {
 	public $url;

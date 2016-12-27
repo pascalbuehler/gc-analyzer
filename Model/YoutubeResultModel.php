@@ -1,5 +1,6 @@
 <?php
-namespace Plugin\YoutubeSearch;
+namespace Model;
+
 class YoutubeResultModel {
 	public $title;
 	public $description;

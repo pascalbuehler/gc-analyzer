@@ -27,7 +27,7 @@ class ImageInfo extends \Plugin\AbstractPlugin {
 	                    $size = getimagesize($url);
 						if ($size)
 						{
-							$imageWithInfoModel = new ImageWithInfoModel();
+							$imageWithInfoModel = new \Model\ImageWithInfoModel();
                             $imageWithInfoModel->url = $imageModel->url;
                             $imageWithInfoModel->name = $imageModel->name;
                             $imageWithInfoModel->description = $imageModel->description;

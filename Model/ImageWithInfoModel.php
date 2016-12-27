@@ -1,5 +1,5 @@
 <?php
-namespace Plugin\ImageInfo;
+namespace Model;
 
 class ImageWithInfoModel extends ImageModel {
 	public $width;

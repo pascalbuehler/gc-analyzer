@@ -23,16 +23,14 @@ class HtmlLinks extends \Plugin\AbstractPlugin {
                 $href = $element->getAttribute('href');
                 if (!isset($this->links[$field]) || !array_key_exists($href, $this->links[$field]))
                 {
-                    $headers = array();
-    
                     $type = $this->getHeaderContentType($href);
-                    $link = new LinkModel();
+                    $link = new \Model\LinkModel();
                     $link->url = $href;
                     $link->contentType = $type;
                     $this->links[$field][$href] = $link;
 
                     if (strpos($type, 'image') !== 'false') {
-                        $imageModel = new ImageInfoPlugin\ImageModel();
+                        $imageModel = new \Model\ImageModel();
                         $imageModel->url = $href;
                         $imageModel->name = '';
                         $imageModel->description = '';
