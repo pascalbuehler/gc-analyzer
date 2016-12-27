@@ -40,6 +40,7 @@ return [
         'description' => 'Searches for comments in the HTML source code.',
         'examples' => [
             'GC68P2Q' => 'Login',
+            'GC6J536' => 'Essen mit Stäbli',
         ],
         'author' => 'frigidor'
     ],

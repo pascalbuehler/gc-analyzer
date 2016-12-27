@@ -7,11 +7,11 @@ class HtmlComment extends \Plugin\AbstractPlugin {
     public function calculate() {
         foreach($this->parameters['fields'] as $field) {
             $matches = false;
-            preg_match_all('/<!--.*-->/', $this->data[$field], $matches);
-            if(is_array($matches) && count($matches)>0) {
-                foreach($matches as $match) {
-                    if(isset($match[0]) && trim($match[0]) != '') {
-                        $this->comments[$field][] = $match[0];
+            preg_match_all('/<!--(.*?)-->/s', $this->data[$field], $matches);
+            if(is_array($matches[1]) && count($matches[1])>0) {
+                foreach($matches[1] as $match) {
+                    if(trim($match)!='') {
+                        $this->comments[$field][] = $match;
                     }
                 }
             }
