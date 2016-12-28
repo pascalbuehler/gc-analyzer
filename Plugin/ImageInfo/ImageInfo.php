@@ -47,6 +47,7 @@ class ImageInfo extends \Plugin\AbstractPlugin {
                             if ($size[2] == IMAGETYPE_GIF) {
                                 $im = imagecreatefromgif($imageModel->url);
                                 $imageWithInfoModel->imagecolorstotal = imagecolorstotal($im);
+var_dump($imageWithInfoModel->imagecolorstotal);
                                 imagedestroy($im);
                             }
 
