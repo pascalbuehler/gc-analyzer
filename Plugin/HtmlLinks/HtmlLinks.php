@@ -28,12 +28,14 @@ class HtmlLinks extends \Plugin\AbstractPlugin {
                     $link->contentType = $type;
                     $this->links[$field][$href] = $link;
 
-                    if (strpos($type, 'image') !== 'false') {
+                    if (strpos($type, 'image') !== false)
+                    {
+                        
                         $imageModel = new \Model\ImageModel();
                         $imageModel->url = $href;
                         $imageModel->name = '';
                         $imageModel->description = '';
-
+                        $imageModel->base64 = \Helper\ImageBase64Helper::downloadImageAsBase64($href);
                         $this->images[$field][] = $imageModel;
                     }
                 }

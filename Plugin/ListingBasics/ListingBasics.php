@@ -25,7 +25,7 @@ class ListingBasics extends \Plugin\AbstractPlugin {
         $source .= '</div>'.PHP_EOL;
         $source .= '<p>Owner: '.$this->data['Owner']['UserName'].' (Hides: '.$this->data['Owner']['HideCount'].' / Finds: '.$this->data['Owner']['FindCount'].')</p>'.PHP_EOL;
         $source .= '<p>PlacedBy: '.$this->data['PlacedBy'].'</p>'.PHP_EOL;
-        $source .= '<p>Size: <img src="https://www.geocaching.com/images/icons/container/'.$this->data['ContainerType']['ContainerTypeName'].'.gif" /> '.$this->data['ContainerType']['ContainerTypeName'].'</p>'.PHP_EOL;
+        $source .= '<p>Size: <img src="https://www.geocaching.com/images/icons/container/'.str_replace(' ', '_', $this->data['ContainerType']['ContainerTypeName']).'.gif" /> '.$this->data['ContainerType']['ContainerTypeName'].'</p>'.PHP_EOL;
         $source .= '<p>Terrain: <img src="https://www.geocaching.com/images/stars/stars'.str_replace('.', '_', $this->data['Terrain']).'.gif" /> / Difficulty: <img src="https://www.geocaching.com/images/stars/stars'.str_replace('.', '_', $this->data['Difficulty']).'.gif" /></p>'.PHP_EOL;
         $source .= '<p>Hints:<br />'.str_replace("\n", '<br />', $this->data['EncodedHints']).'</p>'.PHP_EOL;
         $source .= '<p>FavoritePoints: '.$this->data['FavoritePoints'].'</p>'.PHP_EOL;

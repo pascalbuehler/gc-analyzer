@@ -12,6 +12,7 @@ class ListingImages extends \Plugin\AbstractPlugin {
                 $imageModel->url = $image['Url'];
                 $imageModel->name = $image['Name'];
                 $imageModel->description = $image['Description'];
+                $imageModel->base64 = \Helper\ImageBase64Helper::downloadImageAsBase64($image['Url']);
 
                 $this->images[$field][] = $imageModel;
             }

@@ -30,6 +30,7 @@ class HtmlImages extends \Plugin\AbstractPlugin {
                         $imageModel->url = $url;
                         $imageModel->name = $name;
                         $imageModel->description = '';
+                        $imageModel->base64 = \Helper\ImageBase64Helper::downloadImageAsBase64($url);
 
                         $this->images[$field][] = $imageModel;
                     }

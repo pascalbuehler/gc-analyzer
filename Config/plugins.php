@@ -123,6 +123,7 @@ return [
         'examples' => [
             'GC6FP4Y' => 'De 25ger',
             'GC6FRYG' => '#000000',
+            'GC3PK9V' => 'Unsichtbar?',
         ],
         'author' => 'BlaiNnn'
     ],

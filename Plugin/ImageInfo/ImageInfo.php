@@ -21,57 +21,57 @@ class ImageInfo extends \Plugin\AbstractPlugin {
                     
                     $url = $imageModel->url;
 
-                    if (!array_key_exists($url, $this->imagesWithInfo)) {
+                    $imgKey = md5($imageModel->base64);
+                    
+                    if (!array_key_exists($imgKey, $this->imagesWithInfo))
+                    {
+                        $imageWithInfoModel = new \Model\ImageWithInfoModel();
+                        $imageWithInfoModel->url = $imageModel->url;
+                        $imageWithInfoModel->name = $imageModel->name;
+                        $imageWithInfoModel->description = $imageModel->description;
+                        $imageWithInfoModel->base64 = $imageModel->base64;
+                        
+                        $size = getimagesizefromstring(base64_decode($imageModel->base64));
+                        $imageWithInfoModel->source = $imageListName;
+                        $imageWithInfoModel->width = $size[0];
+                        $imageWithInfoModel->height = $size[1];
+                        $imageWithInfoModel->mime = $size['mime'];
 
-                        $size = getimagesize($url);
-                        if ($size)
-                        {
-                            $imageWithInfoModel = new \Model\ImageWithInfoModel();
-                            $imageWithInfoModel->url = $imageModel->url;
-                            $imageWithInfoModel->name = $imageModel->name;
-                            $imageWithInfoModel->description = $imageModel->description;
-
-                            $imageWithInfoModel->source = $imageListName;
-                            $imageWithInfoModel->width = $size[0];
-                            $imageWithInfoModel->height = $size[1];
-                            $imageWithInfoModel->mime = $size['mime'];
-
-                            if ($size[2] == IMAGETYPE_JPEG) {
-                                $exif = exif_read_data($imageModel->url, 'FILE', true);
-                                if ($exif != null && $exif != '') {
-                                    $imageWithInfoModel->exif = $exif;
-                                    $this->setSuccess(true);
-                                }
+                        if ($size[2] == IMAGETYPE_JPEG) {
+                            $exif = exif_read_data($imageWithInfoModel->getImgSrcBase64(), 'FILE', true);
+                            if ($exif != null && $exif != '') {
+                                $imageWithInfoModel->exif = $exif;
+                                $this->setSuccess(true);
                             }
-                            
-                            if ($size[2] == IMAGETYPE_GIF) {
-                                $im = imagecreatefromgif($imageModel->url);
-                                $imageWithInfoModel->imagecolorstotal = imagecolorstotal($im);
-                                imagedestroy($im);
-                            }
-
-                            $this->imagesWithInfo[$url] = $imageWithInfoModel;
                         }
+                        
+                        if ($size[2] == IMAGETYPE_GIF) {
+                            $im = \Helper\ImageBase64Helper::createImageResourceFromBase64($imageModel->base64);
+                            $imageWithInfoModel->imagecolorstotal = imagecolorstotal($im);
+                            imagedestroy($im);
+                        }
+
+                        $this->imagesWithInfo[$imgKey] = $imageWithInfoModel;
                     }
                     else {
                         //image exists in the list, add current source info
-                        $this->imagesWithInfo[$url]->source .= ' / '.$imageListName;
+                        $this->imagesWithInfo[$imgKey]->source .= ' / '.$imageListName;
 
                         if($imageModel->name != null && strlen($imageModel->name) > 0) {
-                            if($this->imagesWithInfo[$url]->name != null && strlen($this->imagesWithInfo[$url]->name)>0) {
-                                $this->imagesWithInfo[$url]->name.= ' / '.$imageModel->name;
+                            if($this->imagesWithInfo[$imgKey]->name != null && strlen($this->imagesWithInfo[$imgKey]->name)>0) {
+                                $this->imagesWithInfo[$imgKey]->name.= ' / '.$imageModel->name;
                             }
                             else {
-                                $this->imagesWithInfo[$url]->name = $imageModel->name;
+                                $this->imagesWithInfo[$imgKey]->name = $imageModel->name;
                             }
                         }
 
                         if($imageModel->name != null && strlen($imageModel->description) > 0) {
-                            if($this->imagesWithInfo[$url]->description != null && strlen($this->imagesWithInfo[$url]->description)>0) {
-                                $this->imagesWithInfo[$url]->description.= ' / '.$imageModel->description;
+                            if($this->imagesWithInfo[$imgKey]->description != null && strlen($this->imagesWithInfo[$imgKey]->description)>0) {
+                                $this->imagesWithInfo[$imgKey]->description.= ' / '.$imageModel->description;
                             }
                             else {
-                                $this->imagesWithInfo[$url]->description = $imageModel->description;
+                                $this->imagesWithInfo[$imgKey]->description = $imageModel->description;
                             }
                         }
                     }
@@ -97,7 +97,7 @@ class ImageInfo extends \Plugin\AbstractPlugin {
                 if($imageWithInfo->name != null && strlen($imageWithInfo->name)>0) {
                     $source.= '      <h5>'.$imageWithInfo->name.'</h5>'.PHP_EOL;
                 }
-                $source.= '      <img src="'.$imageWithInfo->url.'" /><br />'.PHP_EOL;
+                $source.= '      <img src="'.$imageWithInfo->getImgSrcBase64().'" /><br />'.PHP_EOL;
                 $source.= '      <div class="caption">'.PHP_EOL;
                 $source.= '        <table class="table table-condensed">'.PHP_EOL;
                 $source.= '          <tr><td valign="top" width="100">Url</td><td><a href="'.$imageWithInfo->url.'" target="_blank">'.$imageWithInfo->url.'</a></td></tr>'.PHP_EOL;

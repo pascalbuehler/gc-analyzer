@@ -10,44 +10,53 @@ class ImageFilters extends \Plugin\AbstractPlugin {
             
             foreach ($this->data['plugins'][$imageListName] as $imageWithInfo)
             {
-                $i++;                
+                $i++;
                 
                 $result = array();
                 $result['imageWithInfo'] = $imageWithInfo;
 
                 $filtersToApply = array(
-                    'Intensiv colors' => array(255, IMG_FILTER_COLORIZE, 0, 0, 0),
-                    'Colorize red' => array(50, IMG_FILTER_COLORIZE, 0, -250, -250),
-                    'Colorize green' => array(50, IMG_FILTER_COLORIZE, -250, 0, -250),
-                    'Colorize blue' => array(50, IMG_FILTER_COLORIZE, -255, -255, 0)
+                    'Intensive colors',
+                    'Randomize colorpalette',
+                    'Colorize red',
+                    'Colorize green',
+                    'Colorize blue',
                 );
                 
-                foreach ($filtersToApply as $filterText => $filter)
+                foreach ($filtersToApply as $filterText)
                 {
-                    if ($imageWithInfo->mime == 'image/png') {
-                        $im = imagecreatefrompng($imageWithInfo->url);
-                    } else if ($imageWithInfo->mime == 'image/gif') {
-                        $im = imagecreatefromgif($imageWithInfo->url);
-                    } else if ($imageWithInfo->mime == 'image/jpeg') {
-                        $im = imagecreatefromjpeg($imageWithInfo->url);
-                    }
-                    
-                    $extremColors = $filter[0];
-                    $filterType = $filter[1];
-                    
-                    $imageFilterResult = false;
-                    $imageFilterResult = imagefilter($im, $filterType, $filter[2], $filter[3], $filter[4]);
-                    $this->intensivyColors($im, $extremColors);
-                    
-                    if($im && $imageFilterResult)
+                    $im = \Helper\ImageBase64Helper::createImageResourceFromBase64($imageWithInfo->base64);
+                                        
+                    switch ($filterText)
                     {
-                        $newFileName = 'Temp/'.$this->data['Code'].'_'.$i.'_'.$filterText.'.png';
-                        imagepng($im, $newFileName);
-                        
-                        $result['imagesWithFilters'][$filterText] = $newFileName;
+                        case 'Intensive colors':
+                            $this->intensivyColors($im, 255);
+                            break;
+                        case 'Randomize colorpalette':
+                            for ($index = 0; $index <= imagecolorstotal($im); $index++)
+                            {
+                                imagecolorset($im, $index, rand(0, 255), rand(0, 255), rand(0, 255));
+                            }
+                            break;
+                        case 'Colorize red':
+                            imagefilter($im, IMG_FILTER_COLORIZE, 0, -250, -250);
+                            $this->intensivyColors($im, 50);
+                            break;
+                        case 'Colorize green':
+                            imagefilter($im, IMG_FILTER_COLORIZE, -250, 0, -250);
+                            $this->intensivyColors($im, 50);
+                            break;
+                        case 'Colorize blue':
+                            imagefilter($im, IMG_FILTER_COLORIZE, -250, -250, 0);
+                            $this->intensivyColors($im, 50);
+                            break;
                     }
-
+                    
+                    $base64data = \Helper\ImageBase64Helper::encodeImageResourceToPngBase64($im);
                     imagedestroy($im);
+                    
+                    $dataUri = 'data:image/png;base64,'.$base64data;
+                    $result['imagesWithFilters'][$filterText] = $dataUri;
                 }
 
                 $this->imagesWithFilters[] = $result;
@@ -73,9 +82,9 @@ class ImageFilters extends \Plugin\AbstractPlugin {
                 if ($g > 255) $g = 255;
                 if ($b > 255) $b = 255;
 
-                imagesetpixel($im, $x, $y,imagecolorallocate($im, $r, $g, $b)); 
-            } 
-        } 
+                imagesetpixel($im, $x, $y, imagecolorallocate($im, $r, $g, $b)); 
+            }
+        }
     }
 
     public function getResult() {
@@ -100,6 +109,7 @@ class ImageFilters extends \Plugin\AbstractPlugin {
                     $source.= '    <div class="thumbnail">'.PHP_EOL;
                     $source.= '      <h5>'.$filterName.'</h5>'.PHP_EOL;
                     $source.= '      <img src="'.$imageResult.'" /><br />'.PHP_EOL;
+                    
                     $source.= '    </div>'.PHP_EOL;
                 }
                 

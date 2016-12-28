@@ -7,4 +7,9 @@ class ImageWithInfoModel extends ImageModel {
     public $mime;
     public $exif;
     public $imagecolorstotal;
+
+    public function getImgSrcBase64()
+    {
+        return 'data:'.$this->mime.';base64,'.$this->base64;
+    }
 }
