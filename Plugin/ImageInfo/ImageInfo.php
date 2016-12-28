@@ -36,12 +36,18 @@ class ImageInfo extends \Plugin\AbstractPlugin {
                             $imageWithInfoModel->height = $size[1];
                             $imageWithInfoModel->mime = $size['mime'];
 
-                            if ($size[2] == IMG_JPEG) {
+                            if ($size[2] == IMAGETYPE_JPEG) {
                                 $exif = exif_read_data($imageModel->url, 'FILE', true);
                                 if ($exif != null && $exif != '') {
                                     $imageWithInfoModel->exif = $exif;
                                     $this->setSuccess(true);
                                 }
+                            }
+                            
+                            if ($size[2] == IMAGETYPE_GIF) {
+                                $im = imagecreatefromgif($imageModel->url);
+                                $imageWithInfoModel->imagecolorstotal = imagecolorstotal($im);
+                                imagedestroy($im);
                             }
 
                             $this->imagesWithInfo[$url] = $imageWithInfoModel;
@@ -98,6 +104,11 @@ class ImageInfo extends \Plugin\AbstractPlugin {
                 $source.= '          <tr><td valign="top">Width</td><td>'.$imageWithInfo->width.'</td></tr>'.PHP_EOL;
                 $source.= '          <tr><td valign="top">Height</td><td>'.$imageWithInfo->height.'</td></tr>'.PHP_EOL;
                 $source.= '          <tr><td valign="top">Mime-Type</td><td>'.$imageWithInfo->mime.'</td></tr>'.PHP_EOL;
+                
+                if($imageWithInfo->imagecolorstotal != null) {
+                    $source.= '          <tr><td valign="top">Count of colors</td><td>'.$imageWithInfo->imagecolorstotal.' <a href="#" data-toggle="tooltip" data-placement="top" title="Interesting to check, if something is hidden in the picture."><span class="glyphicon glyphicon-question-sign"></span></a></td></tr>'.PHP_EOL;
+                }
+                
                 if($imageWithInfo->description != null && strlen($imageWithInfo->description)>0) {
                     $source.= '          <tr><td valign="top">Description</td><td>'.$imageWithInfo->description.'</td></tr>'.PHP_EOL;
                 }
@@ -112,12 +123,7 @@ class ImageInfo extends \Plugin\AbstractPlugin {
                     $source.= '    <pre class="pre-scrollable">'.print_r($imageWithInfo->exif, true).'</pre>'.PHP_EOL;
                     $source.= '  </div>'.PHP_EOL;
                 }
-                if ($imageWithInfo->comments != null){
-                    $source.= '  <div class="col-lg-6">'.PHP_EOL;
-                    $source.= '    <h4>EXIF Comments</h4>'.PHP_EOL;
-                    $source.= '    <pre class="pre-scrollable">'.print_r($imageWithInfo->comments, true).'</pre>'.PHP_EOL;
-                    $source.= '  </div>'.PHP_EOL;
-                }
+                
                 $source.= '</div>'.PHP_EOL;
             }
         }
