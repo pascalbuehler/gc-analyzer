@@ -105,6 +105,25 @@ return [
         'examples' => [
             'GC111YR' => 'Spoiler',
             'GC65H6Q' => 'Hikiashi spricht NoSQL',
+            'GC2Q844' => 'Empty',
+        ],
+        'author' => 'BlaiNnn'
+    ],
+    'ImageFilters' => [
+        'class' => Plugin\ImageFilters\ImageFilters::class,
+        'dependencies' => [
+            'ImageInfo',
+        ],
+        'parameters' => [
+            'imageSources' => [
+                'ImageInfo',
+            ]
+        ],
+        'description' => 'Applies different filters on the found images',
+        'examples' => [
+            'GC6FP4Y' => 'De 25ger',
+            'GC6FRYG' => '#000000',
+            'GC3PK9V' => 'Unsichtbar?',
         ],
         'author' => 'BlaiNnn'
     ],
