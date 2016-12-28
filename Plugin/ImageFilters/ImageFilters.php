@@ -33,6 +33,10 @@ class ImageFilters extends \Plugin\AbstractPlugin {
                             $this->intensivyColors($im, 255);
                             break;
                         case 'Randomize colorpalette':
+                            // save to gif and reload it
+                            $base64gif = \Helper\ImageBase64Helper::encodeImageResourceToGifBase64($im);
+                            $im = \Helper\ImageBase64Helper::createImageResourceFromBase64($base64gif);
+
                             for ($index = 0; $index <= imagecolorstotal($im); $index++)
                             {
                                 imagecolorset($im, $index, rand(0, 255), rand(0, 255), rand(0, 255));

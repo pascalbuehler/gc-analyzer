@@ -22,4 +22,13 @@ class ImageBase64Helper
         ob_end_clean();
         return base64_encode($contents);
     }
+    
+    public static function encodeImageResourceToGifBase64($im)
+    {
+        ob_start();
+        imagegif($im);
+        $contents = ob_get_contents();
+        ob_end_clean();
+        return base64_encode($contents);
+    }
 }
