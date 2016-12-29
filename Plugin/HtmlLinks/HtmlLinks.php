@@ -20,6 +20,10 @@ class HtmlLinks extends \Plugin\AbstractPlugin {
             foreach ($elements as $element)
             {
                 $href = $element->getAttribute('href');
+                if(substr($href, 0, 4)!=='http') {
+                    continue;
+                }
+                
                 if (!isset($this->links[$field]) || !array_key_exists($href, $this->links[$field]))
                 {
                     $type = $this->getHeaderContentType($href);
