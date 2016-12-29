@@ -67,10 +67,14 @@ switch($mode) {
         if(isset($config['plugins']) && is_array($config['plugins']) && count($config['plugins'])>0) {
             $runnedPlugins = [];
             foreach($config['plugins'] as $pluginName => $pluginConfig) {
-                // Load plugin
+                // Check plugin
                 if(!isset($pluginConfig['class'])) {
                     continue;
                 }
+                if(isset($pluginConfig['runbydefault']) && $pluginConfig['runbydefault']===false) {
+                    continue;
+                }
+                // Load plugin
                 $parameters = isset($pluginConfig['parameters']) ? $pluginConfig['parameters'] : [];
                 $plugin = new $pluginConfig['class']($data, $parameters);
                 // Check plugin

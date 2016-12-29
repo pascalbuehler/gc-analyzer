@@ -13,7 +13,8 @@ return [
         'examples' => [
             'GC40' => 'Geocache',
         ],
-        'author' => 'BlaiNnn'
+        'author' => 'BlaiNnn',
+        'runbydefault' => true,
     ],
     'HtmlSource' => [
         'class' => Plugin\HtmlSource\HtmlSource::class,
@@ -27,7 +28,8 @@ return [
         'examples' => [
             'GC40' => 'Geocache',
         ],
-        'author' => 'frigidor'
+        'author' => 'frigidor',
+        'runbydefault' => true,
     ],
     'HtmlComment' => [
         'class' => Plugin\HtmlComment\HtmlComment::class,
@@ -42,7 +44,8 @@ return [
             'GC68P2Q' => 'Login',
             'GC6J536' => 'Essen mit Stäbli',
         ],
-        'author' => 'frigidor'
+        'author' => 'frigidor',
+        'runbydefault' => true,
     ],
     'HtmlLinks' => [
         'class' => Plugin\HtmlLinks\HtmlLinks::class,
@@ -58,7 +61,8 @@ return [
             'GC6G1P7' => 'Soundcheck! track two',
             'GC549K3' => 'Kulturgut Kirchenlied RG 247',
         ],
-        'author' => 'BlaiNnn'
+        'author' => 'BlaiNnn',
+        'runbydefault' => true,
     ],
     'HtmlImages' => [
         'class' => Plugin\HtmlImages\HtmlImages::class,
@@ -68,11 +72,12 @@ return [
                 'LongDescription',
             ]
         ],
-        'description' => 'Finds and displays images in the HTML source code.',
+        'description' => 'Finds images in the HTML source code.',
         'examples' => [
             'GC2T6E3' => 'Whirlpool',
         ],
-        'author' => 'BlaiNnn'
+        'author' => 'BlaiNnn',
+        'runbydefault' => true,
     ],
     'ListingImages' => [
         'class' => Plugin\ListingImages\ListingImages::class,
@@ -81,11 +86,26 @@ return [
                 'Images'
             ]
         ],
-        'description' => 'Finds and displays images attached to the listing.',
+        'description' => 'Finds images attached to the listing.',
         'examples' => [
             'GC56NXQ' => 'Hard Targets: Plan B',
         ],
-        'author' => 'BlaiNnn'
+        'author' => 'BlaiNnn',
+        'runbydefault' => true,
+    ],
+    'BackgroundImages' => [
+        'class' => Plugin\BackgroundImages\BackgroundImages::class,
+        'parameters' => [
+            'fields' => [
+                'Images'
+            ]
+        ],
+        'description' => 'Finds background image of the listing.',
+        'examples' => [
+            'GC4F8CZ' => 'Pizzo del Prévat',
+        ],
+        'author' => 'frigidor',
+        'runbydefault' => true,
     ],
     'ImageInfo' => [
         'class' => Plugin\ImageInfo\ImageInfo::class,
@@ -99,6 +119,7 @@ return [
                 'HtmlImages',
                 'ListingImages',
                 'HtmlLinks::Images',
+                'BackgroundImages',
             ]
         ],
         'description' => 'Extracts exif data from images',
@@ -107,7 +128,8 @@ return [
             'GC65H6Q' => 'Hikiashi spricht NoSQL',
             'GC2Q844' => 'Empty',
         ],
-        'author' => 'BlaiNnn'
+        'author' => 'BlaiNnn',
+        'runbydefault' => true,
     ],
     'ImageFilters' => [
         'class' => Plugin\ImageFilters\ImageFilters::class,
@@ -125,7 +147,8 @@ return [
             'GC6FRYG' => '#000000',
             'GC3PK9V' => 'Unsichtbar?',
         ],
-        'author' => 'BlaiNnn'
+        'author' => 'BlaiNnn',
+        'runbydefault' => true,
     ],
     'Youtube' => [
         'class' => Plugin\YoutubeSearch\YoutubeSearch::class,
@@ -135,6 +158,7 @@ return [
             ]
         ],
         'description' => 'Searches for Youtube-Videos',
-        'author' => 'BlaiNnn'
+        'author' => 'BlaiNnn',
     ],
+    'runbydefault' => true,
 ];
