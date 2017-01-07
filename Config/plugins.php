@@ -159,6 +159,6 @@ return [
         ],
         'description' => 'Searches for Youtube-Videos',
         'author' => 'BlaiNnn',
+        'runbydefault' => true,
     ],
-    'runbydefault' => true,
 ];
