@@ -158,6 +158,9 @@ return [
             ]
         ],
         'description' => 'Searches for Youtube-Videos',
+        'examples' => [
+            'GC6PR6G' => 'Bär@home',
+        ],
         'author' => 'BlaiNnn',
         'runbydefault' => true,
     ],

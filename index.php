@@ -1,4 +1,5 @@
 <?php
+use Helper\ConfigHelper;
 use Layout\Layout;
 use Plugin\PluginInterface;
 
@@ -36,11 +37,8 @@ else {
 }
 
 // CONFIG
-$configfile = 'Config/'.$env.'.php';
-$config = file_exists($configfile) ? include($configfile) : false;
-if(!$config) {
-    die('Config file not found (APPLICATION_ENV='.$env.')');
-}
+ConfigHelper::init('Config/'.$env.'.php');
+$config = ConfigHelper::getConfig();
 
 // RUN
 switch($mode) {

@@ -1,24 +1,27 @@
 <?php
 namespace Plugin\YoutubeSearch;
 
+use Helper\ConfigHelper;
+
 class YoutubeSearch extends \Plugin\AbstractPlugin {
+    private $googleApiToken = false;
     private $youtubeResults = [];
 
     public function calculate() {
-        global $config;
-        
-        if ($config['youtubeApiToken'] == '') return;
+        $config = ConfigHelper::getConfig();
+        $this->googleApiToken = isset($config['googleApiToken']) ?: false;
+        if(!$this->googleApiToken) {
+            return;
+        }
         
         foreach($this->parameters['fields'] as $field) {
-            
             $query = $this->data[$field];
             
-            $url = 'https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q='.$query.'&key='.$config['youtubeApiToken'];
+            $url = 'https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&q='.$query.'&key='.$config['googleApiToken'];
             $body = file_get_contents($url);
             $json = json_decode($body);
 
-            foreach ($json->items as $item)
-            {
+            foreach ($json->items as $item) {
                 $youtubeResultModel = new \Model\YoutubeResultModel();
                 
                 $youtubeResultModel->videoId = $item->id->videoId;
@@ -38,19 +41,14 @@ class YoutubeSearch extends \Plugin\AbstractPlugin {
     }
 
     public function getOutput() {
-        global $config;
-        
-        if ($config['youtubeApiToken'] == '')
-        {
-            $source = 'youtubeApiToken not configured: search not possible';
+        if(!$this->googleApiToken) {
+            $source = 'googleApiToken not configured: search not possible';
             return $source;
         }
         
         $source = '';
-        foreach($this->youtubeResults as $field => $results)
-        {
-            foreach($results as $result)
-            {
+        foreach($this->youtubeResults as $results) {
+            foreach($results as $result) {
                 $source.= '<div class="row">'.PHP_EOL;
                 $source.= '  <div class="col-lg-6 limit-img">'.PHP_EOL;
                 $source.= '    <div class="thumbnail">'.PHP_EOL;                
