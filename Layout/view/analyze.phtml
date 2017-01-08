@@ -6,6 +6,7 @@
                 <a href="#plugin-<?= $pluginName ?>" class="btn btn-margin-bottom <?= $pluginData['status']==\Plugin\AbstractPlugin::PLUGIN_STATUS_FAILED ? 'btn-danger' : 'btn-primary' ?>" role="button"<?= !isset($pluginData['output']) || $pluginData['output']===false || !strlen($pluginData['output'])>0 ? ' disabled' : '' ?>>
                     <?php if($pluginData['success']): ?><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <?php endif; ?>
                     <?= $pluginName ?>
+<?php if($pluginData['time'] != 0) { echo '&nbsp;'.$pluginData['time']; }?>
                 </a>
 <?php endforeach; ?>
             </div>

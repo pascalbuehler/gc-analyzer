@@ -88,16 +88,25 @@ switch($mode) {
                         }
                     }
                 }
+                
+                $time = 0;
+                
                 // Run plugin
                 if($plugin->getStatus()==Plugin\AbstractPlugin::PLUGIN_STATUS_OK) {
+                    
+                    if ($config['printPluginRuntime']) $timeStart = microtime(true);
+
                     $plugin->calculate();
                     $data['plugins'][$pluginName] = $plugin->getResult();
                     $pluginOutput = $plugin->getOutput();
+                    
+                    if ($config['printPluginRuntime'])
+                    {
+                        $timeEnd = microtime(true);
+                        $time = $timeEnd - $timeStart;
+                    }
                 }
-                else {
-                    $pluginOutput = '';
-                }
-                $layout->addPluginData($pluginName, $pluginOutput, $plugin->getStatus(), $plugin->getSuccess());
+                $layout->addPluginData($pluginName, $pluginOutput, $plugin->getStatus(), $plugin->getSuccess(), $time);
                 $runnedPlugins[] = $pluginName;
             }
         }

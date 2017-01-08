@@ -166,4 +166,16 @@ return [
         'author' => 'BlaiNnn',
         'runbydefault' => true,
     ],
+    'LogImages with GPS' => [
+        'class' => Plugin\LogImages\LogImages::class,
+        'parameters' => [
+            'fields' => []
+        ],
+        'description' => 'Searches for GPS-Coordinates in log images',
+        'examples' => [
+            'GC2HJD3' => 'Strömli #3',
+        ],
+        'author' => 'BlaiNnn',
+        'runbydefault' => true,
+    ],
 ];

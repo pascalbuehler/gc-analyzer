@@ -10,11 +10,12 @@ class Layout {
         $this->templateData = $templateData;
     }
     
-    public function addPluginData($pluginName, $pluginOutput, $pluginStatus, $pluginSuccess) {
+    public function addPluginData($pluginName, $pluginOutput, $pluginStatus, $pluginSuccess, $time) {
         $this->templateData['plugins'][$pluginName] = [
             'output' => $pluginOutput,
             'status' => $pluginStatus,
-            'success' => $pluginSuccess
+            'success' => $pluginSuccess,
+            'time' => number_format($time, 2),
         ];
     }
     
