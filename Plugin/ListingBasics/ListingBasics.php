@@ -31,26 +31,41 @@ class ListingBasics extends \Plugin\AbstractPlugin {
         $source.= '</div>'.PHP_EOL;
         $source.= '<div class="row">'.PHP_EOL;
         $source.= '  <div class="col-lg-6 col-md-6 col-xs-12">'.PHP_EOL;
-        $source.= '    <p>Owner: '.$this->data['Owner']['UserName'].' (Hides: '.$this->data['Owner']['HideCount'].' | Finds: '.$this->data['Owner']['FindCount'].')</p>'.PHP_EOL;
-        $source.= '    <p>PlacedBy: '.$this->data['PlacedBy'].'</p>'.PHP_EOL;
-        $source.= '    <p>Size: <img src="https://www.geocaching.com/images/icons/container/'.str_replace(' ', '_', $this->data['ContainerType']['ContainerTypeName']).'.gif" /> '.$this->data['ContainerType']['ContainerTypeName'].'</p>'.PHP_EOL;
-        $source.= '    <p>Difficulty: <img src="https://www.geocaching.com/images/stars/stars'.str_replace('.', '_', $this->data['Difficulty']).'.gif" /> / Terrain: <img src="https://www.geocaching.com/images/stars/stars'.str_replace('.', '_', $this->data['Terrain']).'.gif" /></p>'.PHP_EOL;
-        $source.= '    <p>Hints:<br />'.str_replace("\n", '<br />', $this->data['EncodedHints']).'</p>'.PHP_EOL;
-        $source.= '    <p>FavoritePoints: '.$this->data['FavoritePoints'].'</p>'.PHP_EOL;
-        $source.= '    <p>Country / State: '.$this->data['Country'].' '.$this->data['State'].'</p>'.PHP_EOL;
-        $source.= '    <p>Coords: '.$this->getCoordsDisplay($this->data['Latitude'], $this->data['Longitude']).'</p>'.PHP_EOL;
+        $source.= '    <div class="caption">'.PHP_EOL;
+        $source.= '      <table class="table table-condensed">'.PHP_EOL;
+        $source.= '        <tr><td valign="top">Coords</td><td>'.$this->getCoordsDisplay($this->data['Latitude'], $this->data['Longitude']).'</td></tr>'.PHP_EOL;
+        $source.= '        <tr><td valign="top">Location</td><td>'.$this->data['Country'].' '.$this->data['State'].'</td></tr>'.PHP_EOL;
+        $source.= '        <tr><td valign="top">Size</td><td><img src="https://www.geocaching.com/images/icons/container/'.str_replace(' ', '_', $this->data['ContainerType']['ContainerTypeName']).'.gif" /> '.$this->data['ContainerType']['ContainerTypeName'].'</td></tr>'.PHP_EOL;
+        $source.= '        <tr><td valign="top">Difficulty</td><td><img src="https://www.geocaching.com/images/stars/stars'.str_replace('.', '_', $this->data['Difficulty']).'.gif" /></td></tr>'.PHP_EOL;
+        $source.= '        <tr><td valign="top">Terrain</td><td><img src="https://www.geocaching.com/images/stars/stars'.str_replace('.', '_', $this->data['Terrain']).'.gif" /></td></tr>'.PHP_EOL;
+        $owner = '          <table>';
+        $owner.= '            <tr>';
+        $owner.= '              <td style="padding-right: 10px"><img src="'.$this->data['Owner']['AvatarUrl'].'" /></td>';
+        $premium = $this->data['Owner']['MemberType']['MemberTypeId']==3 ? ' <img src="Layout/images/premium.png" alt="Premium Member" title="Premium Member" />' : '';
+        $owner.= '              <td valign="top">'.$this->data['Owner']['UserName'].$premium.'<br />Hides: '.$this->data['Owner']['HideCount'].'<br />Founds: '.$this->data['Owner']['FindCount'].'</td>';
+        $owner.= '            </tr>';
+        $owner.= '          </table>';
+        $source.= '        <tr><td valign="top">Owner</td><td>'.$owner.'</td></tr>'.PHP_EOL;
+        $source.= '        <tr><td valign="top">PlacedBy</td><td>'.$this->data['PlacedBy'].'</td></tr>'.PHP_EOL;
+        $source.= '        <tr><td valign="top">Hints</td><td>'.nl2br($this->data['EncodedHints']).'</td></tr>'.PHP_EOL;
+        $source.= '        <tr><td valign="top">Favorites</td><td>'.$this->data['FavoritePoints'].'</td></tr>'.PHP_EOL;
+        $source.= '      </table>'.PHP_EOL;
+        $source.= '    </div>'.PHP_EOL;
+//        $source.= '    <p>Owner: <img src="'.$this->data['Owner']['AvatarUrl'].'" /> '.$this->data['Owner']['UserName'].' (Hides: '.$this->data['Owner']['HideCount'].' | Finds: '.$this->data['Owner']['FindCount'].')</p>'.PHP_EOL;
 
-        if(isset($this->data['AdditionalWaypoints']) && is_array($this->data['AdditionalWaypoints']) && count($this->data['AdditionalWaypoints'])>0) {
+        $additionalWaypoints = WaypointHelper::getAdditionalWaypoints($this->data);
+        if(is_array($additionalWaypoints) && count($additionalWaypoints)>0) {
             $source.= '    <h3>Waypoints</h3>'.PHP_EOL;
-            foreach ($this->data['AdditionalWaypoints'] as $waypoint) {
-                $source.= '    <h4>'.$waypoint['Name'].' '.$waypoint['Type'].' ('.$waypoint['Code'].')</h4>'.PHP_EOL;
+            foreach ($additionalWaypoints as $waypoint) {
+                $icon = $waypoint->icon!==null ? '<img src="'.$waypoint->icon.'" alt="'.$waypoint->type.'"> ' : '';
+                $source.= '    <h4>'.$icon.$waypoint->title.' ('.$waypoint->id.')</h4>'.PHP_EOL;
                 $source.= '    <div class="caption">'.PHP_EOL;
                 $source.= '      <table class="table table-condensed">'.PHP_EOL;
-                if(isset($waypoint['Description']) && strlen($waypoint['Description'])>0) {
-                    $source.= '        <tr><td valign="top">Description</td><td>'.$waypoint['Description'].'</td></tr>'.PHP_EOL;
+                if(strlen($waypoint->description)>0) {
+                    $source.= '        <tr><td valign="top">Description</td><td>'.nl2br($waypoint->description).'</td></tr>'.PHP_EOL;
                 }
-                if(floatval($waypoint['Latitude'])>0 && floatval($waypoint['Longitude'])>0) {
-                    $source.= '        <tr><td valign="top">Coords</td><td>'.$this->getCoordsDisplay($waypoint['Latitude'], $waypoint['Longitude']).'</td></tr>'.PHP_EOL;
+                if($waypoint->latitude!==null && $waypoint->longitude!==null) {
+                    $source.= '        <tr><td valign="top">Coords</td><td>'.$this->getCoordsDisplay($waypoint->latitude, $waypoint->longitude).'</td></tr>'.PHP_EOL;
                 }
                 $source.= '      </table>'.PHP_EOL;
                 $source.= '    </div>'.PHP_EOL;
@@ -89,7 +104,7 @@ class ListingBasics extends \Plugin\AbstractPlugin {
     private function getGoogleMapsJS() {
         $js = '';
         
-        $waypoints = WaypointHelper::getWaypoints($this->data);
+        $waypoints = WaypointHelper::getAllWaypoints($this->data);
         $bounds = $this->getGoogleMapsBounds($waypoints);
         
         $js.= 'var map;'.PHP_EOL;
@@ -133,7 +148,7 @@ class ListingBasics extends \Plugin\AbstractPlugin {
         // Markers for additional waypoints
         if(count($waypoints)>0) {
             foreach($waypoints as $waypoint) {
-                if(floatval($waypoint->latitude)>0 && floatval($waypoint->longitude)>0) {
+                if($waypoint->latitude!==null && $waypoint->longitude!==null) {
                     $js.= $this->getGoogleMapsMarkerJS(
                         $waypoint->id,
                         $waypoint->latitude, 
@@ -152,7 +167,6 @@ class ListingBasics extends \Plugin\AbstractPlugin {
         return $js;
     }
     
-    
     private function getGoogleMapsBounds(array $waypoints) {
         $bounds = array(
             'LatitudeMin' => 90,
@@ -162,23 +176,23 @@ class ListingBasics extends \Plugin\AbstractPlugin {
         );
 
         foreach($waypoints as $waypoint) {
-            if(floatval($waypoint->latitude)>0) {
+            if($waypoint->latitude!==null) {
                 $bounds['LatitudeMin'] = $waypoint->latitude<$bounds['LatitudeMin'] ? $waypoint->latitude : $bounds['LatitudeMin'];
                 $bounds['LatitudeMax'] = $waypoint->latitude>$bounds['LatitudeMax'] ? $waypoint->latitude : $bounds['LatitudeMax'];
             }
-            if(floatval($waypoint->longitude)>0) {
+            if($waypoint->longitude!==null) {
                 $bounds['LongitudeMin'] = $waypoint->longitude<$bounds['LongitudeMin'] ? $waypoint->longitude : $bounds['LongitudeMin'];
                 $bounds['LongitudeMax'] = $waypoint->longitude>$bounds['LongitudeMax'] ? $waypoint->longitude : $bounds['LongitudeMax'];
             }
         }
 
         if($bounds['LatitudeMin']==$bounds['LatitudeMax']) {
-            $bounds['LatitudeMin']-= 0.01;
-            $bounds['LatitudeMax']+= 0.01;
+            $bounds['LatitudeMin']-= 0.02;
+            $bounds['LatitudeMax']+= 0.02;
         }
         if($bounds['LongitudeMin']==$bounds['LongitudeMax']) {
-            $bounds['LongitudeMin'] -= 0.01;
-            $bounds['LongitudeMax'] += 0.01;
+            $bounds['LongitudeMin'] -= 0.02;
+            $bounds['LongitudeMax'] += 0.02;
         }
         
         return $bounds;
