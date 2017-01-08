@@ -112,6 +112,11 @@ class ImageInfo extends \Plugin\AbstractPlugin {
                 if($imageWithInfo->description != null && strlen($imageWithInfo->description)>0) {
                     $source.= '          <tr><td valign="top">Description</td><td>'.$imageWithInfo->description.'</td></tr>'.PHP_EOL;
                 }
+                
+                $source.= '          <tr><td valign="top" colspan="2">'.PHP_EOL;
+                $source.= '            <a href="https://www.google.com/searchbyimage?&image_url='.$imageWithInfo->url.'"><span class="glyphicon glyphicon-search"></span>Google Image</a>&nbsp;'.PHP_EOL;
+                $source.= '            <a href="http://exif.regex.info/exif.cgi?imgurl='.$imageWithInfo->url.'"><span class="glyphicon glyphicon-search"></span>Jeffreys (exif)</a>'.PHP_EOL;
+               $source.= '           </td></tr>'.PHP_EOL;
                 $source.= '        </table>'.PHP_EOL;
                 $source.= '      </div>'.PHP_EOL;
                 $source.= '    </div>'.PHP_EOL;
