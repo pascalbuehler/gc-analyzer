@@ -22,7 +22,7 @@ class LogImages extends \Plugin\AbstractPlugin {
             $logImageModel->thumbUrl = $image['ThumbUrl'];
             $logImageModel->description = $image['Name'];
 
-            $extension = pathinfo($imageWithInfoModel->url)['extension'];
+            $extension = pathinfo($logImageModel->url)['extension'];
             
             if (!($extension == "jpg" || $extension != "jpeg")) {
                 continue;
@@ -53,9 +53,11 @@ class LogImages extends \Plugin\AbstractPlugin {
     }
     
     private function getGpsPositionFromExif($exif) {
-        $lat = $exif['GPS']['GPSLatitude']; 
-        $log = $exif['GPS']['GPSLongitude'];
-        if (!$lat || !$log) return null;
+        $lat = isset($exif['GPS']['GPSLatitude']) ? $exif['GPS']['GPSLatitude'] : false; 
+        $lng = isset($exif['GPS']['GPSLongitude']) ? $exif['GPS']['GPSLongitude'] : false;
+        if (!$lat || !$lng) {
+            return null;
+        }
         
         // latitude values //
         $lat_degrees = $this->divide($lat[0]);
@@ -64,9 +66,9 @@ class LogImages extends \Plugin\AbstractPlugin {
         $lat_hemi = $exif['GPS']['GPSLatitudeRef'];
 
         // longitude values //
-        $log_degrees = $this->divide($log[0]);
-        $log_minutes = $this->divide($log[1]);
-        $log_seconds = $this->divide($log[2]);
+        $log_degrees = $this->divide($lng[0]);
+        $log_minutes = $this->divide($lng[1]);
+        $log_seconds = $this->divide($lng[2]);
         $log_hemi = $exif['GPS']['GPSLongitudeRef'];
 
         $lat_decimal = $this->toDecimal($lat_degrees, $lat_minutes, $lat_seconds, $lat_hemi);
@@ -103,7 +105,10 @@ class LogImages extends \Plugin\AbstractPlugin {
         {
             foreach($this->logImages as $logImage)
             {
-                $coords = CoordsHelper::convertDecimalToDecimalMinute($logImage->latitude, $logImage->longitude);
+                $hasCoords = $logImage->latitude!==null && $logImage->longitude!==null;
+                if($hasCoords) {
+                    $coords = CoordsHelper::convertDecimalToDecimalMinute($logImage->latitude, $logImage->longitude);
+                }
                 
                 $source.= '<div class="row">'.PHP_EOL;
                 $source.= '  <div class="col-lg-6 limit-img">'.PHP_EOL;
@@ -113,8 +118,10 @@ class LogImages extends \Plugin\AbstractPlugin {
                 $source.= '        <table class="table table-condensed">'.PHP_EOL;
                 $source.= '          <tr><td valign="top" width="100">Url</td><td><a href="'.$logImage->url.'" target="_blank">'.$logImage->url.'</a></td></tr>'.PHP_EOL;
                 $source.= '          <tr><td valign="top">Description</td><td>'.$logImage->description.'</td></tr>'.PHP_EOL;
-                $source.= '          <tr><td valign="top">Position</td><td>'.$coords.'</td></tr>'.PHP_EOL;
-                $source.= '          <tr><td valign="top" colspan="2"><a href="http://exif.regex.info/exif.cgi?imgurl='.$logImage->url.'" target="_blank"><span class="glyphicon glyphicon-search"></span>Jeffreys (exif)</a></td></tr>'.PHP_EOL;
+                if($hasCoords) {
+                    $source.= '          <tr><td valign="top">Position</td><td>'.$coords.'</td></tr>'.PHP_EOL;
+                }
+                $source.= '          <tr><td valign="top" colspan="2"><a href="http://exif.regex.info/exif.cgi?imgurl='.$logImage->url.'" target="_blank"><span class="glyphicon glyphicon-search"></span> Jeffreys (exif)</a></td></tr>'.PHP_EOL;
                 $source.= '        </table>'.PHP_EOL;
                 $source.= '      </div>'.PHP_EOL;
                 $source.= '    </div>'.PHP_EOL;
