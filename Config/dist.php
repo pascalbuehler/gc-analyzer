@@ -13,6 +13,7 @@ return [
     ],
     
     'plugins' => include('plugins.php'),
-    'googleApiToken' => '',
     'printPluginRuntime' => false,
+
+    'googleApiToken' => '',
 ];

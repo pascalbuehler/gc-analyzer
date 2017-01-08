@@ -23,7 +23,9 @@ class LogImages extends \Plugin\AbstractPlugin {
 
             $extension = pathinfo($imageWithInfoModel->url)['extension'];
             
-            if (!($extension == "jpg" || $extension != "jpeg")) continue;
+            if (!($extension == "jpg" || $extension != "jpeg")) {
+                continue;
+            }
             
             $exif = @exif_read_data($image['Url'], 'FILE', true);
             
