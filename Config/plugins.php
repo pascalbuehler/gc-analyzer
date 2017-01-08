@@ -114,6 +114,7 @@ return [
             'HtmlImages',
             'ListingImages',
             'HtmlLinks',
+            'BackgroundImages',
         ],
         'parameters' => [
             'imageSources' => [
