@@ -42,16 +42,19 @@ class ListingBasics extends \Plugin\AbstractPlugin {
         $owner.= '            <tr>';
         $owner.= '              <td style="padding-right: 10px"><img src="'.$this->data['Owner']['AvatarUrl'].'" /></td>';
         $premium = $this->data['Owner']['MemberType']['MemberTypeId']==3 ? ' <img src="Layout/images/premium.png" alt="Premium Member" title="Premium Member" />' : '';
-        $owner.= '              <td valign="top">'.$this->data['Owner']['UserName'].$premium.'<br />Hides: '.$this->data['Owner']['HideCount'].'<br />Founds: '.$this->data['Owner']['FindCount'].'</td>';
+        $owner.= '              <td valign="top"><a href="https://www.geocaching.com/profile/?guid='.$this->data['Owner']['PublicGuid'].'" target="_blank">'.$this->data['Owner']['UserName'].$premium.'</a>'.PHP_EOL;
+        $owner.= '              <br />Hides: '.$this->data['Owner']['HideCount'].'<br />Founds: '.$this->data['Owner']['FindCount'].'</td>';
         $owner.= '            </tr>';
         $owner.= '          </table>';
         $source.= '        <tr><td valign="top">Owner</td><td>'.$owner.'</td></tr>'.PHP_EOL;
-        $source.= '        <tr><td valign="top">PlacedBy</td><td>'.$this->data['PlacedBy'].'</td></tr>'.PHP_EOL;
+        if ($this->data['Owner']['UserName'] != $this->data['PlacedBy'])
+        {
+            $source.= '        <tr><td valign="top">PlacedBy</td><td>'.$this->data['PlacedBy'].'</td></tr>'.PHP_EOL;
+        }
         $source.= '        <tr><td valign="top">Hints</td><td>'.nl2br($this->data['EncodedHints']).'</td></tr>'.PHP_EOL;
-        $source.= '        <tr><td valign="top">Favorites</td><td>'.$this->data['FavoritePoints'].'</td></tr>'.PHP_EOL;
+        $source.= '        <tr><td valign="top">Favorites</td><td><img src="Layout/images/favorite.png" alt="Favorites" title="Favorites" /> '.$this->data['FavoritePoints'].'</td></tr>'.PHP_EOL;
         $source.= '      </table>'.PHP_EOL;
         $source.= '    </div>'.PHP_EOL;
-//        $source.= '    <p>Owner: <img src="'.$this->data['Owner']['AvatarUrl'].'" /> '.$this->data['Owner']['UserName'].' (Hides: '.$this->data['Owner']['HideCount'].' | Finds: '.$this->data['Owner']['FindCount'].')</p>'.PHP_EOL;
 
         $additionalWaypoints = WaypointHelper::getAdditionalWaypoints($this->data);
         if(is_array($additionalWaypoints) && count($additionalWaypoints)>0) {
