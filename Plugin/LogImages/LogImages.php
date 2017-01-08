@@ -22,14 +22,21 @@ class LogImages extends \Plugin\AbstractPlugin {
             $logImageModel->thumbUrl = $image['ThumbUrl'];
             $logImageModel->description = $image['Name'];
 
-            $extension = pathinfo($logImageModel->url)['extension'];            
-            if (!($extension == "jpg" || $extension != "jpeg")) continue;
+            $extension = pathinfo($imageWithInfoModel->url)['extension'];
+            
+            if (!($extension == "jpg" || $extension != "jpeg")) {
+                continue;
+            }
             
             $exif = @exif_read_data($logImageModel->url, 0, true);
             $logImageModel->exif = $exif;
             
-            if ($exif == null || $exif == '') continue;
-            if (!isset($exif['GPS'])) continue;
+            if ($exif == null || $exif == '') {
+                continue;
+            }
+            if (!isset($exif['GPS'])) {
+                continue;
+            }
             $pos = $this->getGpsPositionFromExif($exif);
             if ($pos) {
                 $logImageModel->latitude = $pos[0];
