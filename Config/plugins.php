@@ -12,8 +12,9 @@ return [
         'description' => 'Display the cache basics',
         'examples' => [
             'GC40' => 'Geocache',
+            'GC64XBT' => 'Chrottebädli'
         ],
-        'author' => 'BlaiNnn',
+        'author' => 'BlaiNnn & frigidor',
         'runbydefault' => true,
     ],
     'HtmlSource' => [
@@ -148,7 +149,7 @@ return [
             'GC3PK9V' => 'Unsichtbar?',
         ],
         'author' => 'BlaiNnn',
-        'runbydefault' => true,
+        'runbydefault' => false,
     ],
     'Youtube' => [
         'class' => Plugin\YoutubeSearch\YoutubeSearch::class,

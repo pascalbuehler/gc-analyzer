@@ -9,7 +9,7 @@ class YoutubeSearch extends \Plugin\AbstractPlugin {
 
     public function calculate() {
         $config = ConfigHelper::getConfig();
-        $this->googleApiToken = isset($config['googleApiToken']) ?: false;
+        $this->googleApiToken = isset($config['googleApiToken']) ? $config['googleApiToken'] : false;
         if(!$this->googleApiToken) {
             return;
         }

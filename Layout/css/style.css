@@ -22,3 +22,7 @@ pre {
 .btn-margin-bottom {
     margin-bottom: 10px;
 }
+
+#map { 
+    height: 600px;
+}
