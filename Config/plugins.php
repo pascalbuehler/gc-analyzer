@@ -150,7 +150,7 @@ return [
             'GC3PK9V' => 'Unsichtbar?',
         ],
         'author' => 'BlaiNnn',
-        'runbydefault' => false,
+        'runbydefault' => true,
     ],
     'Youtube' => [
         'class' => Plugin\YoutubeSearch\YoutubeSearch::class,

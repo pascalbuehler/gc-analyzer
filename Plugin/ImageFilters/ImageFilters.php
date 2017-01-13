@@ -2,6 +2,9 @@
 namespace Plugin\ImageFilters;
 
 class ImageFilters extends \Plugin\AbstractPlugin {
+    const IMAGE_SIZE_MEDIUM = 640;
+    const IMAGE_SIZE_SMALL = 320;
+    
     private $imagesWithFilters = [];
 
     public function calculate() {
@@ -17,42 +20,67 @@ class ImageFilters extends \Plugin\AbstractPlugin {
 
                 $filtersToApply = array(
                     'Intensive colors',
-                    'Randomize colorpalette',
-                    'Colorize red',
-                    'Colorize green',
-                    'Colorize blue',
+                    'Random colors',
+                    'Checker colors',
+                    'Edge detect',
                 );
                 
                 foreach ($filtersToApply as $filterText)
                 {
                     $im = \Helper\ImageBase64Helper::createImageResourceFromBase64($imageWithInfo->base64);
-                                        
+                    
                     switch ($filterText)
                     {
-                        case 'Intensive colors':
-                            $this->intensivyColors($im, 255);
+                         case 'Intensive colors':
+                            if($imageWithInfo->width>self::IMAGE_SIZE_SMALL) {
+                                $im = imagescale($im, self::IMAGE_SIZE_SMALL);
+                            }
+                            $this->intensivyColors($im, 225);
                             break;
-                        case 'Randomize colorpalette':
+                        case 'Random colors':
+                            if($imageWithInfo->width>self::IMAGE_SIZE_MEDIUM) {
+                                $im = imagescale($im, self::IMAGE_SIZE_MEDIUM);
+                            }
+                            
                             // save to gif and reload it
                             $base64gif = \Helper\ImageBase64Helper::encodeImageResourceToGifBase64($im);
                             $im = \Helper\ImageBase64Helper::createImageResourceFromBase64($base64gif);
 
-                            for ($index = 0; $index <= imagecolorstotal($im); $index++)
-                            {
+                            for ($index = 0; $index < imagecolorstotal($im); $index++) {
                                 imagecolorset($im, $index, rand(0, 255), rand(0, 255), rand(0, 255));
                             }
                             break;
-                        case 'Colorize red':
-                            imagefilter($im, IMG_FILTER_COLORIZE, 0, -250, -250);
-                            $this->intensivyColors($im, 50);
+                        case 'Checker colors':
+                            if($imageWithInfo->width>self::IMAGE_SIZE_MEDIUM) {
+                                $im = imagescale($im, self::IMAGE_SIZE_MEDIUM);
+                            }
+                            
+                            // save to gif and reload it
+                            $base64gif = \Helper\ImageBase64Helper::encodeImageResourceToGifBase64($im);
+                            $im = \Helper\ImageBase64Helper::createImageResourceFromBase64($base64gif);
+
+                            $colors = [];
+                            for ($index = 0; $index < imagecolorstotal($im); $index++) {
+                                $color = imagecolorsforindex($im, $index);
+                                $colors[$index] = str_pad(dechex($color['red']), 2, 0, STR_PAD_LEFT).
+                                    str_pad(dechex($color['green']), 2, 0, STR_PAD_LEFT).
+                                    str_pad(dechex($color['blue']), 2, 0, STR_PAD_LEFT);
+                            }
+                            asort($colors);
+
+                            $brightness = 0;
+                            foreach($colors as $index => $color) {
+                                imagecolorset($im, $index, $brightness, $brightness, $brightness);
+                                $brightness = $brightness==0 ? 255 : 0;
+                            }
                             break;
-                        case 'Colorize green':
-                            imagefilter($im, IMG_FILTER_COLORIZE, -250, 0, -250);
-                            $this->intensivyColors($im, 50);
-                            break;
-                        case 'Colorize blue':
-                            imagefilter($im, IMG_FILTER_COLORIZE, -250, -250, 0);
-                            $this->intensivyColors($im, 50);
+                        case 'Edge detect':
+                            if($imageWithInfo->width>self::IMAGE_SIZE_MEDIUM) {
+                                $im = imagescale($im, self::IMAGE_SIZE_MEDIUM);
+                            }
+                            
+                            $this->edgeDetect($im);
+                            $this->enhanceContrast($im, 3, -90);
                             break;
                     }
                     
@@ -68,7 +96,13 @@ class ImageFilters extends \Plugin\AbstractPlugin {
         }
     }
     
-    private function intensivyColors(&$im, $factor){ 
+    private function enhanceContrast(&$im, $repeat = 1, $contrast = -100) {
+        for($i=0; $i<$repeat; $i++) {
+            imagefilter($im, IMG_FILTER_CONTRAST, $contrast);
+        }
+    }
+    
+     private function intensivyColors(&$im, $factor){ 
         $height = imagesy($im); 
         $width = imagesx($im); 
         for($x=0; $x<$width; $x++){ 
@@ -82,13 +116,16 @@ class ImageFilters extends \Plugin\AbstractPlugin {
                 $g = $g*$factor;
                 $b = $b*$factor;
                 
-                if ($r > 255) $r = 255;
-                if ($g > 255) $g = 255;
-                if ($b > 255) $b = 255;
-
+                $r = min($r, 255);
+                $g = min($g, 255);
+                $b = min($b, 255);
                 imagesetpixel($im, $x, $y, imagecolorallocate($im, $r, $g, $b)); 
             }
         }
+    }
+    
+    private function edgeDetect(&$im) { 
+        imagefilter($im, IMG_FILTER_EDGEDETECT);
     }
 
     public function getResult() {
