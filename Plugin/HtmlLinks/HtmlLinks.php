@@ -49,7 +49,8 @@ class HtmlLinks extends \Plugin\AbstractPlugin {
 
     private function getHeaderContentType($href) {
         // get headers, if not a checker-url
-        if (\Helper\CheckerHelper::isCheckerUrl($href)) return '';
+        if (\Helper\KnownUrlHelper::isCheckerUrl($href)) return '';
+        if (\Helper\KnownUrlHelper::isGroundspeakUrl($href)) return '';
         
         $headers = get_headers($href, 1);
 

@@ -27,7 +27,7 @@ return [
         ],
         'description' => 'Extracts and displays the HTML source code.',
         'examples' => [
-            'GC40' => 'Geocache',
+            'GC6Z01H' => 'Local Cache',
         ],
         'author' => 'frigidor',
         'runbydefault' => true,
@@ -176,6 +176,6 @@ return [
             'GC2HJD3' => 'Strömli #3',
         ],
         'author' => 'BlaiNnn',
-        'runbydefault' => true,
+        'runbydefault' => false,
     ],
 ];

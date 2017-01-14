@@ -8,11 +8,13 @@ class ListingImages extends \Plugin\AbstractPlugin {
         foreach($this->parameters['fields'] as $field) {
             foreach ($this->data[$field] as $image)
             {
+                $url = $image['Url'];
+                if (\Helper\KnownUrlHelper::isCheckerUrl($url)) continue;
                 $imageModel = new \Model\ImageModel();
-                $imageModel->url = $image['Url'];
+                $imageModel->url = $url;
                 $imageModel->name = $image['Name'];
                 $imageModel->description = $image['Description'];
-                $imageModel->base64 = \Helper\ImageBase64Helper::downloadImageAsBase64($image['Url']);
+                $imageModel->base64 = \Helper\ImageBase64Helper::downloadImageAsBase64($url);
 
                 $this->images[$field][] = $imageModel;
             }

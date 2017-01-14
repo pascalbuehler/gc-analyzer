@@ -20,12 +20,12 @@ class HtmlImages extends \Plugin\AbstractPlugin {
             {
                 $url = $element->getAttribute('src');
                 
-                if (!(\Helper\CheckerHelper::isCheckerUrl($url)))
+                if (!(\Helper\KnownUrlHelper::isCheckerUrl($url)))
                 {
                     if (!isset($this->images[$field]) || !in_array($url, $this->images[$field]))
                     {
                         $name = $element->getAttribute('title') ? $element->getAttribute('title') : ($element->getAttribute('alt') ? $element->getAttribute('alt') : '');
-
+                        
                         $imageModel = new \Model\ImageModel();
                         $imageModel->url = $url;
                         $imageModel->name = $name;
