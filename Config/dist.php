@@ -1,15 +1,18 @@
 <?php
+
+use Core\InputParameters;
+
 return [
     'apiEndpoint' => '',
     'apiParameters' => [
         'token' => '',
-        'code' => basename(filter_input(INPUT_GET, 'code', FILTER_SANITIZE_STRING)),
+        'code' => InputParameters::getParameter('code'),
     ],
     
     'apiEndpointImages' => '',
     'apiParametersImages' => [
         'token' => '',
-        'code' => basename(filter_input(INPUT_GET, 'code', FILTER_SANITIZE_STRING)),
+        'code' => InputParameters::getParameter('code'),
     ],
     
     'plugins' => include('plugins.php'),

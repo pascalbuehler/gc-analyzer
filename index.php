@@ -1,4 +1,6 @@
 <?php
+use Core\InputParameters;
+use Core\Router;
 use Helper\ConfigHelper;
 use Layout\Layout;
 use Plugin\PluginInterface;
@@ -27,13 +29,14 @@ spl_autoload_register(function($class) {
 // ENVIRONMENT
 $env = getenv('APPLICATION_ENV') ?: 'dist';
 
-// MODE
-$code = filter_input(INPUT_GET, 'code', FILTER_SANITIZE_STRING);
-if($code) {
-    $mode = 'analyze';
-}
-else {
-    $mode = 'home';
+// INPUT PARAMETERS
+InputParameters::init();
+
+// ROUTE
+$rewrite = filter_input(INPUT_GET, 'rewrite', FILTER_SANITIZE_STRING);
+if($rewrite) { 
+    $url = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_STRING);
+    Router::route($url);
 }
 
 // CONFIG
@@ -41,17 +44,20 @@ ConfigHelper::init('Config/'.$env.'.php');
 $config = ConfigHelper::getConfig();
 
 // RUN
-switch($mode) {
-    case 'home';
+switch(InputParameters::getParameter('page')) {
+    case Router::PAGE_HOME;
         $layout = new Layout('home', ['config' => $config]);
         $layout->render();
         break;
-    case 'analyze';
+    case Router::PAGE_ANALYZE;
         // BASEDATA
         $url = $config['apiEndpoint'].'?'.http_build_query($config['apiParameters']);
         $data = file_get_contents($url);
         if(!$data) {
             die('Api not reachable ('.$url.')');
+        }
+        elseif($data=='null') {
+            die('Api returned nothing ('.$url.')');
         }
         $data = json_decode($data, true);
 
