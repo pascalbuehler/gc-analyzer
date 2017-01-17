@@ -1,9 +1,11 @@
 <?php
 use Core\InputParameters;
+use Core\PluginRunner;
 use Core\Router;
 use Helper\ConfigHelper;
 use Layout\Layout;
-use Plugin\PluginInterface;
+use Model\PluginResultModel;
+
 
 // SECURITY
 // Unset PHP_SELF because it allows SQL-Injection and Cross-Site-Scripting
@@ -65,55 +67,18 @@ switch(InputParameters::getParameter('page')) {
         // @todo
 
         // LAYOUT INIT
-        $layout = new Layout('analyze');
+        $layout = new Layout('analyze', ['layoutConfig' => $config['layout']]);
 
         // PLUGINS
         if(isset($config['plugins']) && is_array($config['plugins']) && count($config['plugins'])>0) {
             $runnedPlugins = [];
             foreach($config['plugins'] as $pluginName => $pluginConfig) {
-                // Check plugin
-                if(!isset($pluginConfig['class'])) {
-                    continue;
+                $pluginResult = PluginRunner::runPlugin($pluginName, $pluginConfig, $data, $runnedPlugins);
+                if($pluginResult!==false) {
+                    $data['plugins'][$pluginName] = $pluginResult->result;
+                    $layout->addPluginData($pluginResult);
+                    $runnedPlugins[] = $pluginName;
                 }
-                if(isset($pluginConfig['runbydefault']) && $pluginConfig['runbydefault']===false) {
-                    continue;
-                }
-                // Load plugin
-                $parameters = isset($pluginConfig['parameters']) ? $pluginConfig['parameters'] : [];
-                $plugin = new $pluginConfig['class']($data, $parameters);
-                // Check plugin
-                if(!in_array(PluginInterface::class, class_implements($plugin))) {
-                    continue;
-                }
-                // Check plugin dependencies
-                if(isset($pluginConfig['dependencies']) && is_array($pluginConfig['dependencies']) && count($pluginConfig['dependencies'])>0) {
-                    foreach($pluginConfig['dependencies'] as $dependency) {
-                        if(!in_array($dependency, $runnedPlugins)) {
-                            $plugin->setStatus(Plugin\AbstractPlugin::PLUGIN_STATUS_FAILED);
-                            continue;
-                        }
-                    }
-                }
-                
-                $time = 0;
-                
-                // Run plugin
-                if($plugin->getStatus()==Plugin\AbstractPlugin::PLUGIN_STATUS_OK) {
-                    
-                    if ($config['printPluginRuntime']) $timeStart = microtime(true);
-
-                    $plugin->calculate();
-                    $data['plugins'][$pluginName] = $plugin->getResult();
-                    $pluginOutput = $plugin->getOutput();
-                    
-                    if ($config['printPluginRuntime'])
-                    {
-                        $timeEnd = microtime(true);
-                        $time = $timeEnd - $timeStart;
-                    }
-                }
-                $layout->addPluginData($pluginName, $pluginOutput, $plugin->getStatus(), $plugin->getSuccess(), $time);
-                $runnedPlugins[] = $pluginName;
             }
         }
         // LAYOUT RENDER

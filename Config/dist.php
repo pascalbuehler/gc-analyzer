@@ -16,7 +16,10 @@ return [
     ],
     
     'plugins' => include('plugins.php'),
-    'printPluginRuntime' => false,
+    
+    'layout' => [
+        'printPluginRuntime' => false,
+    ],
 
     'googleApiToken' => '',
 ];

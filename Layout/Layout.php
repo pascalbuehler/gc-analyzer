@@ -1,6 +1,8 @@
 <?php
 namespace Layout;
 
+use \Model\PluginResultModel;
+
 class Layout {
     private $template;
     private $templateData = [];
@@ -10,17 +12,17 @@ class Layout {
         $this->templateData = $templateData;
     }
     
-    public function addPluginData($pluginName, $pluginOutput, $pluginStatus, $pluginSuccess, $time) {
-        $this->templateData['plugins'][$pluginName] = [
-            'output' => $pluginOutput,
-            'status' => $pluginStatus,
-            'success' => $pluginSuccess,
-            'time' => number_format($time, 2),
+    public function addPluginData(PluginResultModel $pluginResult) {
+        $this->templateData['plugins'][$pluginResult->name] = [
+            'output' => $pluginResult->output,
+            'status' => $pluginResult->status,
+            'success' => $pluginResult->success,
+            'time' => number_format($pluginResult->time, 2),
         ];
     }
     
     public function render() {
-        // Export template data
+        // Export plugin data
         foreach($this->templateData as $dataName => $data) {
             $$dataName = $data;
         }
