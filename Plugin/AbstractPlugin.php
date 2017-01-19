@@ -1,15 +1,14 @@
 <?php
 namespace Plugin;
 
+use Model\PluginResultModel;
+
 abstract class AbstractPlugin implements PluginInterface {
-    const PLUGIN_STATUS_FAILED = 0;
-    const PLUGIN_STATUS_OK = 1;
-    
     protected $data = null;
     protected $parameters = [];
    
     private $success = false;
-    private $status = self::PLUGIN_STATUS_OK;
+    private $status = PluginResultModel::PLUGIN_STATUS_OK;
     
     public function __construct(array $data, array $parameters = []) {
         $this->data = $data;

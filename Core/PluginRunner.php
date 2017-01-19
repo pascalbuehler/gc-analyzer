@@ -33,7 +33,7 @@ class PluginRunner {
         if(isset($config['dependencies']) && is_array($config['dependencies']) && count($config['dependencies'])>0) {
             foreach($config['dependencies'] as $dependency) {
                 if(!in_array($dependency, $runnedPlugins)) {
-                    $plugin->setStatus(AbstractPlugin::PLUGIN_STATUS_FAILED);
+                    $plugin->setStatus(PluginResultModel::PLUGIN_STATUS_FAILED);
                     break;
                 }
             }
@@ -45,7 +45,7 @@ class PluginRunner {
         $pluginResult->status = $plugin->getStatus();
 
         // Run plugin if possbile
-        if($plugin->getStatus()==AbstractPlugin::PLUGIN_STATUS_OK) {
+        if($plugin->getStatus()==PluginResultModel::PLUGIN_STATUS_OK) {
             $timeStart = microtime(true);
 
             $plugin->calculate();
