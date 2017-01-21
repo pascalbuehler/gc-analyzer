@@ -1,2 +1,3 @@
-/config/dev.php
+/config/*
+!/config/dist.php
 web.config
