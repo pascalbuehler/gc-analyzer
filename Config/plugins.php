@@ -176,6 +176,6 @@ return [
             'GC2HJD3' => 'Strömli #3',
         ],
         'author' => 'BlaiNnn',
-        'runbydefault' => true,
+        'runbydefault' => false,
     ],
 ];

@@ -14,6 +14,9 @@ class InputParameters {
             InputParameters::setParameter($name, $value);
         }
         
+        // RunID
+        InputParameters::setParameter('runid', uniqid());
+        
         // Defaults
         InputParameters::setParameter('page', Router::PAGE_HOME);
     }

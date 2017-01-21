@@ -9,7 +9,7 @@ use Layout\Layout;
 class PageRenderer {
     public static function render($page) {
         if(!$page) {
-            throw new Exception('No page to render');
+            throw new \Exception('No page to render');
         }
         
         $config = ConfigHelper::getConfig();
@@ -25,8 +25,15 @@ class PageRenderer {
                 PluginRunner::runAllPlugins($layout, $data);
                 $layout->render();
                 break;
+            case Router::PAGE_PLUGIN;
+                $data = ApiHelper::getBaseData();
+                $pluginName = InputParameters::getParameter('plugin');
+                $layout = new Layout('plugin', ['layoutConfig' => $config['layout'], 'pluginName' => $pluginName]);
+                PluginRunner::runSinglePlugin($pluginName, $layout, $data);
+                $layout->render();
+                break;
             default:
-                throw new Exception('No idea how to render page "'.$page.'"');
+                throw new \Exception('No idea how to render page "'.$page.'"');
         }
     }
 }

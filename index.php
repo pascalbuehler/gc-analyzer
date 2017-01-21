@@ -32,16 +32,18 @@ $env = getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'dist';
 // INPUT PARAMETERS
 InputParameters::init();
 
+// CONFIG
+ConfigHelper::init('Config/'.$env.'.php');
+
 // ROUTE
 $rewrite = filter_input(INPUT_GET, 'rewrite', FILTER_SANITIZE_STRING);
 if($rewrite) { 
     $url = filter_input(INPUT_GET, 'url', FILTER_SANITIZE_STRING);
-    Router::route($url);
+    $routeResult = Router::route($url);
+    if(!$routeResult) {
+        throw new Exception('No route found');
+    }
 }
-
-// CONFIG
-ConfigHelper::init('Config/'.$env.'.php');
-$config = ConfigHelper::getConfig();
 
 // RUN
 PageRenderer::render(InputParameters::getParameter('page'));

@@ -15,12 +15,12 @@ class PluginRunner {
     public static function runAllPlugins(Layout $layout, array &$data) {
         $config = ConfigHelper::getConfig();
         if(!isset($config['plugins']) || !is_array($config['plugins']) || !count($config['plugins'])>0) {
-            throw new Exception('No plugins to run');
+            throw new \Exception('No plugins to run');
         }
 
         $runnedPlugins = [];
         foreach($config['plugins'] as $pluginName => $pluginConfig) {
-            $pluginResult = PluginRunner::runPlugin($pluginName, $pluginConfig, $data, $runnedPlugins);
+            $pluginResult = self::runPlugin($pluginName, $pluginConfig, $data, $runnedPlugins);
             if($pluginResult!==false) {
                 $data['plugins'][$pluginName] = $pluginResult->result;
                 $layout->addPluginData($pluginResult);
@@ -29,7 +29,21 @@ class PluginRunner {
         }
     }
     
-    public static function runPlugin($name, array $config, array &$data, array $runnedPlugins = []) {
+    public static function runSinglePlugin($pluginName, Layout $layout, array &$data) {
+        $config = ConfigHelper::getConfig();
+        if(!isset($config['plugins']) || !is_array($config['plugins']) || !in_array($pluginName, array_keys($config['plugins']))) {
+            throw new \Exception('Plugins "'.$pluginName.'" not availabe');
+        }
+
+        $pluginConfig = $config['plugins'][$pluginName];
+        $pluginResult = self::runPlugin($pluginName, $pluginConfig, $data, []);
+        if($pluginResult!==false) {
+            $data['plugins'][$pluginName] = $pluginResult->result;
+            $layout->addPluginData($pluginResult);
+        }
+    }
+
+    private static function runPlugin($name, array $config, array &$data, array $runnedPlugins = []) {
         // Check plugin
         if(!isset($config['class'])) {
             return false;
