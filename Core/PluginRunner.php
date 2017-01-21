@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use Helper\ConfigHelper;
+use Layout\Layout;
 use Model\PluginResultModel;
 use Plugin\PluginInterface;
 
@@ -9,6 +11,23 @@ class PluginRunner {
     const RUN_PLUGIN_SYNC = 'sync';
     const RUN_PLUGIN_ASYNC = 'async';
     const RUN_PLUGIN_NONE = 'none';
+    
+    public static function runAllPlugins(Layout $layout, array &$data) {
+        $config = ConfigHelper::getConfig();
+        if(!isset($config['plugins']) || !is_array($config['plugins']) || !count($config['plugins'])>0) {
+            throw new Exception('No plugins to run');
+        }
+
+        $runnedPlugins = [];
+        foreach($config['plugins'] as $pluginName => $pluginConfig) {
+            $pluginResult = PluginRunner::runPlugin($pluginName, $pluginConfig, $data, $runnedPlugins);
+            if($pluginResult!==false) {
+                $data['plugins'][$pluginName] = $pluginResult->result;
+                $layout->addPluginData($pluginResult);
+                $runnedPlugins[] = $pluginName;
+            }
+        }
+    }
     
     public static function runPlugin($name, array $config, array &$data, array $runnedPlugins = []) {
         // Check plugin
