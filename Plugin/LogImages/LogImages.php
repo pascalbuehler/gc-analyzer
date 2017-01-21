@@ -1,20 +1,13 @@
 <?php
 namespace Plugin\LogImages;
 
-use Helper\ConfigHelper;
+use Helper\ApiHelper;
 use Helper\CoordsHelper;
 
 class LogImages extends \Plugin\AbstractPlugin {
     private $logImages = [];
     public function calculate() {
-
-        $config = ConfigHelper::getConfig();
-        $url = $config['apiEndpointImages'].'?'.http_build_query($config['apiParametersImages']);
-        $data = file_get_contents($url);
-        if(!$data) {
-            die('Api not reachable ('.$url.')');
-        }
-        $data = json_decode($data, true);
+        $data = ApiHelper::getImageData();
                 
         foreach ($data['Images'] as $image) {
             $logImageModel = new \Model\LogImageModel();

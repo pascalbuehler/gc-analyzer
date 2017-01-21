@@ -2,9 +2,10 @@
 use Core\InputParameters;
 use Core\PluginRunner;
 use Core\Router;
+use Helper\ApiHelper;
 use Helper\ConfigHelper;
 use Layout\Layout;
-use Model\PluginResultModel;
+
 
 
 // SECURITY
@@ -29,7 +30,7 @@ spl_autoload_register(function($class) {
 });
 
 // ENVIRONMENT
-$env = getenv('APPLICATION_ENV') ?: 'dist';
+$env = getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'dist';
 
 // INPUT PARAMETERS
 InputParameters::init();
@@ -53,15 +54,7 @@ switch(InputParameters::getParameter('page')) {
         break;
     case Router::PAGE_ANALYZE;
         // BASEDATA
-        $url = $config['apiEndpoint'].'?'.http_build_query($config['apiParameters']);
-        $data = file_get_contents($url);
-        if(!$data) {
-            die('Api not reachable ('.$url.')');
-        }
-        elseif($data=='null') {
-            die('Api returned nothing ('.$url.')');
-        }
-        $data = json_decode($data, true);
+        $data = ApiHelper::getBaseData();
 
         // ENRICH BASEDATA
         // @todo

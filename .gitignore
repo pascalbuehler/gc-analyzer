@@ -1,3 +1,4 @@
 /config/*
 !/config/dist.php
+.htaccess
 web.config

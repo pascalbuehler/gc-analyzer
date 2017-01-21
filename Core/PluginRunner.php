@@ -3,7 +3,6 @@
 namespace Core;
 
 use Model\PluginResultModel;
-use Plugin\AbstractPlugin;
 use Plugin\PluginInterface;
 
 class PluginRunner {
