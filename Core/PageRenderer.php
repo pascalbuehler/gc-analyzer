@@ -27,7 +27,7 @@ class PageRenderer {
                 break;
             case Router::PAGE_PLUGIN;
                 $data = ApiHelper::getBaseData();
-                $pluginName = InputParameters::getParameter('plugin');
+                $pluginName = InputParameters::get('plugin');
                 $layout = new Layout('plugin', ['layoutConfig' => $config['layout'], 'pluginName' => $pluginName]);
                 PluginRunner::runSinglePlugin($pluginName, $layout, $data);
                 $layout->render();

@@ -48,7 +48,7 @@ class PluginRunner {
         if(!isset($config['class'])) {
             return false;
         }
-        if(isset($config['runbydefault']) && $config['runbydefault']===false) {
+        if(isset($config['runmode']) && $config['runmode']===self::RUN_PLUGIN_NONE) {
             return false;
         }
 

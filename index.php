@@ -2,6 +2,7 @@
 use Core\InputParameters;
 use Core\PageRenderer;
 use Core\Router;
+use Core\Session;
 use Helper\ConfigHelper;
 
 
@@ -32,6 +33,9 @@ $env = getenv('APPLICATION_ENV') ? getenv('APPLICATION_ENV') : 'dist';
 // INPUT PARAMETERS
 InputParameters::init();
 
+// SESSION
+Session::init();
+
 // CONFIG
 ConfigHelper::init('Config/'.$env.'.php');
 
@@ -46,4 +50,4 @@ if($rewrite) {
 }
 
 // RUN
-PageRenderer::render(InputParameters::getParameter('page'));
+PageRenderer::render(InputParameters::get('page'));

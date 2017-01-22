@@ -16,14 +16,14 @@ class Router {
 
         // Home
         if(!is_array($urlpieces) || count($urlpieces)<1) {
-            InputParameters::setParameter('page', self::PAGE_HOME);
+            InputParameters::set('page', self::PAGE_HOME);
             return true;
         }
         
         // Analyze
         if(count($urlpieces)==1 && isset($urlpieces[0]) && strtolower(substr($urlpieces[0], 0, 2))=='gc') {
-            InputParameters::setParameter('code', $urlpieces[0]);
-            InputParameters::setParameter('page', self::PAGE_ANALYZE);
+            InputParameters::set('code', $urlpieces[0]);
+            InputParameters::set('page', self::PAGE_ANALYZE);
             return true;
         }
         
@@ -31,9 +31,9 @@ class Router {
         if(count($urlpieces)==2) {
             $config = ConfigHelper::getConfig();
             if(in_array($urlpieces[1], array_keys($config['plugins']))) {
-                InputParameters::setParameter('code', $urlpieces[0]);
-                InputParameters::setParameter('plugin', $urlpieces[1]);
-                InputParameters::setParameter('page', self::PAGE_PLUGIN);
+                InputParameters::set('code', $urlpieces[0]);
+                InputParameters::set('plugin', $urlpieces[1]);
+                InputParameters::set('page', self::PAGE_PLUGIN);
                 return true;
             }
         }

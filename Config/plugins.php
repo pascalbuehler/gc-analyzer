@@ -1,5 +1,7 @@
 <?php
 
+use Core\PluginRunner;
+
 return [
     'ListingBasics' => [
         'class' => Plugin\ListingBasics\ListingBasics::class,
@@ -15,7 +17,7 @@ return [
             'GC64XBT' => 'Chrottebädli'
         ],
         'author' => 'BlaiNnn & frigidor',
-        'runbydefault' => true,
+        'runmode' => PluginRunner::RUN_PLUGIN_SYNC,
     ],
     'HtmlSource' => [
         'class' => Plugin\HtmlSource\HtmlSource::class,
@@ -30,7 +32,7 @@ return [
             'GC6Z01H' => 'Local Cache',
         ],
         'author' => 'frigidor',
-        'runbydefault' => true,
+        'runmode' => PluginRunner::RUN_PLUGIN_SYNC,
     ],
     'HtmlComment' => [
         'class' => Plugin\HtmlComment\HtmlComment::class,
@@ -46,7 +48,7 @@ return [
             'GC6J536' => 'Essen mit Stäbli',
         ],
         'author' => 'frigidor',
-        'runbydefault' => true,
+        'runmode' => PluginRunner::RUN_PLUGIN_SYNC,
     ],
     'HtmlLinks' => [
         'class' => Plugin\HtmlLinks\HtmlLinks::class,
@@ -63,7 +65,7 @@ return [
             'GC549K3' => 'Kulturgut Kirchenlied RG 247',
         ],
         'author' => 'BlaiNnn',
-        'runbydefault' => true,
+        'runmode' => PluginRunner::RUN_PLUGIN_SYNC,
     ],
     'HtmlImages' => [
         'class' => Plugin\HtmlImages\HtmlImages::class,
@@ -78,7 +80,7 @@ return [
             'GC2T6E3' => 'Whirlpool',
         ],
         'author' => 'BlaiNnn',
-        'runbydefault' => true,
+        'runmode' => true,
     ],
     'ListingImages' => [
         'class' => Plugin\ListingImages\ListingImages::class,
@@ -92,7 +94,7 @@ return [
             'GC56NXQ' => 'Hard Targets: Plan B',
         ],
         'author' => 'BlaiNnn',
-        'runbydefault' => true,
+        'runmode' => PluginRunner::RUN_PLUGIN_SYNC,
     ],
     'BackgroundImages' => [
         'class' => Plugin\BackgroundImages\BackgroundImages::class,
@@ -106,7 +108,7 @@ return [
             'GC4F8CZ' => 'Pizzo del Prévat',
         ],
         'author' => 'frigidor',
-        'runbydefault' => true,
+        'runmode' => PluginRunner::RUN_PLUGIN_SYNC,
     ],
     'ImageInfo' => [
         'class' => Plugin\ImageInfo\ImageInfo::class,
@@ -131,7 +133,7 @@ return [
             'GC2Q844' => 'Empty',
         ],
         'author' => 'BlaiNnn',
-        'runbydefault' => true,
+        'runmode' => PluginRunner::RUN_PLUGIN_SYNC,
     ],
     'ImageFilters' => [
         'class' => Plugin\ImageFilters\ImageFilters::class,
@@ -150,7 +152,7 @@ return [
             'GC3PK9V' => 'Unsichtbar?',
         ],
         'author' => 'BlaiNnn',
-        'runbydefault' => true,
+        'runmode' => PluginRunner::RUN_PLUGIN_SYNC,
     ],
     'Youtube' => [
         'class' => Plugin\YoutubeSearch\YoutubeSearch::class,
@@ -164,7 +166,7 @@ return [
             'GC6PR6G' => 'Bär@home',
         ],
         'author' => 'BlaiNnn',
-        'runbydefault' => true,
+        'runmode' => PluginRunner::RUN_PLUGIN_SYNC,
     ],
     'LogImages with GPS' => [
         'class' => Plugin\LogImages\LogImages::class,
@@ -176,6 +178,6 @@ return [
             'GC2HJD3' => 'Strömli #3',
         ],
         'author' => 'BlaiNnn',
-        'runbydefault' => false,
+        'runmode' => PluginRunner::RUN_PLUGIN_NONE,
     ],
 ];

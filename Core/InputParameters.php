@@ -11,21 +11,22 @@ class InputParameters {
             if(in_array($name, ['url', 'rewrite'])) {
                 continue;
             }
-            InputParameters::setParameter($name, $value);
+            InputParameters::set($name, $value);
         }
         
         // RunID
-        InputParameters::setParameter('runid', uniqid());
+        InputParameters::set('runid', uniqid('gcanalyzer'));
         
         // Defaults
-        InputParameters::setParameter('page', Router::PAGE_HOME);
+        InputParameters::set('page', Router::PAGE_HOME);
     }
     
-    public static function setParameter($name, $value) {
+    public static function set($name, $value) {
         self::$parameters[$name] = $value;
+        return true;
     }
 
-    public static function getParameter($name) {
+    public static function get($name) {
         if(isset(self::$parameters[$name])) {
             return self::$parameters[$name];
         }
@@ -33,7 +34,7 @@ class InputParameters {
         return false;
     }
 
-    public static function getParameters() {
+    public static function getAll() {
         return self::$parameters;
     }
 }
