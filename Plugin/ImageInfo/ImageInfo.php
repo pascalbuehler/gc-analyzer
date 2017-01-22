@@ -1,6 +1,8 @@
 <?php
 namespace Plugin\ImageInfo;
 
+use Core\Session;
+
 class ImageInfo extends \Plugin\AbstractPlugin {
     private $imagesWithInfo = [];
 
@@ -8,23 +10,17 @@ class ImageInfo extends \Plugin\AbstractPlugin {
         foreach($this->parameters['imageSources'] as $imageListNameRaw) {
             $explode = explode('::', $imageListNameRaw);
             $imageListName = $explode[0];
-
-            if (isset($explode[1]))
-            {
-                $imageListFields = $this->data['plugins'][$imageListName][$explode[1]];
-            } else {
-                $imageListFields = $this->data['plugins'][$imageListName];
+            if(isset($explode[1])) {
+                $imageListFields = Session::get([Session::PLUGINDATA_KEY, $imageListName, $explode[1]]);
+            } 
+            else {
+                $imageListFields = Session::get([Session::PLUGINDATA_KEY, $imageListName]);
             }
 
-            foreach ($imageListFields as $images) {
-                foreach ($images as $imageModel) {
-                    
-                    $url = $imageModel->url;
-
+            foreach($imageListFields as $images) {
+                foreach($images as $imageModel) {
                     $imgKey = md5($imageModel->base64);
-                    
-                    if (!array_key_exists($imgKey, $this->imagesWithInfo))
-                    {
+                    if(!array_key_exists($imgKey, $this->imagesWithInfo)) {
                         $imageWithInfoModel = new \Model\ImageWithInfoModel();
                         $imageWithInfoModel->url = $imageModel->url;
                         $imageWithInfoModel->name = $imageModel->name;
@@ -37,9 +33,9 @@ class ImageInfo extends \Plugin\AbstractPlugin {
                         $imageWithInfoModel->height = $size[1];
                         $imageWithInfoModel->mime = $size['mime'];
 
-                        if ($size[2] == IMAGETYPE_JPEG) {
+                        if($size[2] == IMAGETYPE_JPEG) {
                             $exif = @exif_read_data($imageWithInfoModel->getImgSrcBase64(), 'FILE', true);
-                            if ($exif != null && $exif != '') {
+                            if($exif != null && $exif != '') {
                                 $imageWithInfoModel->exif = $exif;
                                 $this->setSuccess(true);
                             }
@@ -86,10 +82,8 @@ class ImageInfo extends \Plugin\AbstractPlugin {
 
     public function getOutput() {
         $source = '';
-        if(count($this->imagesWithInfo)>0)
-        {
-            foreach($this->imagesWithInfo as $imageWithInfo)
-            {
+        if(count($this->imagesWithInfo)>0) {
+            foreach($this->imagesWithInfo as $imageWithInfo) {
                 $source.= '<div class="row">'.PHP_EOL;
                 $source.= '  <div class="col-lg-6 limit-img">'.PHP_EOL;
                 $source.= '    <h4>Image from '.$imageWithInfo->source.'</h4>'.PHP_EOL;
@@ -122,7 +116,7 @@ class ImageInfo extends \Plugin\AbstractPlugin {
                 $source.= '    </div>'.PHP_EOL;
                 $source.= '  </div>'.PHP_EOL;
 
-                if ($imageWithInfo->exif != null){
+                if($imageWithInfo->exif != null){
                     $source.= '  <div class="col-lg-6">'.PHP_EOL;
                     $source.= '    <h4>EXIF</h4>'.PHP_EOL;
                     $source.= '    <pre class="pre-scrollable">'.print_r($imageWithInfo->exif, true).'</pre>'.PHP_EOL;

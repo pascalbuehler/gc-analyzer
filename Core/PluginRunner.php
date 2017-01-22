@@ -22,7 +22,7 @@ class PluginRunner {
         foreach($config['plugins'] as $pluginName => $pluginConfig) {
             $pluginResult = self::runPlugin($pluginName, $pluginConfig, $data, $runnedPlugins);
             if($pluginResult!==false) {
-                $data['plugins'][$pluginName] = $pluginResult->result;
+                Session::set([Session::PLUGINDATA_KEY, $pluginName], $pluginResult->result);
                 $layout->addPluginData($pluginResult);
                 $runnedPlugins[] = $pluginName;
             }
@@ -38,7 +38,7 @@ class PluginRunner {
         $pluginConfig = $config['plugins'][$pluginName];
         $pluginResult = self::runPlugin($pluginName, $pluginConfig, $data, []);
         if($pluginResult!==false) {
-            $data['plugins'][$pluginName] = $pluginResult->result;
+            Session::set([Session::PLUGINDATA_KEY, $pluginName], $pluginResult->result);
             $layout->addPluginData($pluginResult);
         }
     }
@@ -64,7 +64,9 @@ class PluginRunner {
         // Check plugin dependencies
         if(isset($config['dependencies']) && is_array($config['dependencies']) && count($config['dependencies'])>0) {
             foreach($config['dependencies'] as $dependency) {
-                if(!in_array($dependency, $runnedPlugins)) {
+                $hasNotRunned = !in_array($dependency, $runnedPlugins);
+                $hasNoData = Session::get([Session::PLUGINDATA_KEY, $dependency])===false;
+                if($hasNotRunned && $hasNoData) {
                     $plugin->setStatus(PluginResultModel::PLUGIN_STATUS_FAILED);
                     break;
                 }

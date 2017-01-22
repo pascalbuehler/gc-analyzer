@@ -1,6 +1,8 @@
 <?php
 namespace Plugin\ImageFilters;
 
+use Core\Session;
+
 class ImageFilters extends \Plugin\AbstractPlugin {
     const IMAGE_SIZE_MEDIUM = 640;
     const IMAGE_SIZE_SMALL = 320;
@@ -11,8 +13,8 @@ class ImageFilters extends \Plugin\AbstractPlugin {
         foreach($this->parameters['imageSources'] as $imageListName) {
             $i = 0;
             
-            foreach ($this->data['plugins'][$imageListName] as $imageWithInfo)
-            {
+            $pluginData = Session::get([Session::PLUGINDATA_KEY, $imageListName]);
+            foreach($pluginData as $imageWithInfo) {
                 $i++;
                 
                 $result = array();
@@ -25,12 +27,10 @@ class ImageFilters extends \Plugin\AbstractPlugin {
                     'Edge detect',
                 );
                 
-                foreach ($filtersToApply as $filterText)
-                {
+                foreach($filtersToApply as $filterText) {
                     $im = \Helper\ImageBase64Helper::createImageResourceFromBase64($imageWithInfo->base64);
                     
-                    switch ($filterText)
-                    {
+                    switch ($filterText) {
                          case 'Intensive colors':
                             if($imageWithInfo->width>self::IMAGE_SIZE_SMALL) {
                                 $im = imagescale($im, self::IMAGE_SIZE_SMALL);
@@ -105,8 +105,8 @@ class ImageFilters extends \Plugin\AbstractPlugin {
      private function intensivyColors(&$im, $factor){ 
         $height = imagesy($im); 
         $width = imagesx($im); 
-        for($x=0; $x<$width; $x++){ 
-            for($y=0; $y<$height; $y++){ 
+        for($x=0; $x<$width; $x++) { 
+            for($y=0; $y<$height; $y++) { 
                 $rgb = ImageColorAt($im, $x, $y);
                 $r = ($rgb >> 16) & 0xFF; 
                 $g = ($rgb >> 8) & 0xFF; 
@@ -134,10 +134,8 @@ class ImageFilters extends \Plugin\AbstractPlugin {
 
     public function getOutput() {
         $source = '';
-        if(count($this->imagesWithFilters)>0)
-        {
-            foreach($this->imagesWithFilters as $imagesWithFilters)
-            {
+        if(count($this->imagesWithFilters)>0) {
+            foreach($this->imagesWithFilters as $imagesWithFilters) {
                 $imageWithInfo = $imagesWithFilters['imageWithInfo'];
                 $imagesWithFilters = $imagesWithFilters['imagesWithFilters'];
                 
@@ -145,12 +143,10 @@ class ImageFilters extends \Plugin\AbstractPlugin {
                 $source.= '  <div class="col-lg-6 limit-img">'.PHP_EOL;
                 $source.= '    <h4>'.$imageWithInfo->url.'</h4>'.PHP_EOL;
                 
-                foreach ($imagesWithFilters as $filterName => $imageResult)
-                {
+                foreach($imagesWithFilters as $filterName => $imageResult) {
                     $source.= '    <div class="thumbnail">'.PHP_EOL;
                     $source.= '      <h5>'.$filterName.'</h5>'.PHP_EOL;
                     $source.= '      <img src="'.$imageResult.'" /><br />'.PHP_EOL;
-                    
                     $source.= '    </div>'.PHP_EOL;
                 }
                 

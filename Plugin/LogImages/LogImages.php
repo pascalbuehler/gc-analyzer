@@ -3,35 +3,36 @@ namespace Plugin\LogImages;
 
 use Helper\ApiHelper;
 use Helper\CoordsHelper;
+use Model\LogImageModel;
 
 class LogImages extends \Plugin\AbstractPlugin {
     private $logImages = [];
     public function calculate() {
         $data = ApiHelper::getImageData();
                 
-        foreach ($data['Images'] as $image) {
-            $logImageModel = new \Model\LogImageModel();
+        foreach($data['Images'] as $image) {
+            $logImageModel = new LogImageModel();
             $logImageModel->url = $image['Url'];
             $logImageModel->thumbUrl = $image['ThumbUrl'];
             $logImageModel->description = $image['Name'];
 
             $extension = pathinfo($logImageModel->url)['extension'];
             
-            if (!($extension == "jpg" || $extension != "jpeg")) {
+            if(!($extension == "jpg" || $extension != "jpeg")) {
                 continue;
             }
             
             $exif = @exif_read_data($logImageModel->url, 0, true);
             $logImageModel->exif = $exif;
             
-            if ($exif == null || $exif == '') {
+            if($exif == null || $exif == '') {
                 continue;
             }
-            if (!isset($exif['GPS'])) {
+            if(!isset($exif['GPS'])) {
                 continue;
             }
             $pos = $this->getGpsPositionFromExif($exif);
-            if ($pos) {
+            if($pos) {
                 $logImageModel->latitude = $pos[0];
                 $logImageModel->longitude = $pos[1];
             }
@@ -48,7 +49,7 @@ class LogImages extends \Plugin\AbstractPlugin {
     private function getGpsPositionFromExif($exif) {
         $lat = isset($exif['GPS']['GPSLatitude']) ? $exif['GPS']['GPSLatitude'] : false; 
         $lng = isset($exif['GPS']['GPSLongitude']) ? $exif['GPS']['GPSLongitude'] : false;
-        if (!$lat || !$lng) {
+        if(!$lat || !$lng) {
             return null;
         }
         
@@ -70,20 +71,19 @@ class LogImages extends \Plugin\AbstractPlugin {
         return array($lat_decimal, $log_decimal);
     }
 
-    private function toDecimal($deg, $min, $sec, $hemi)
-    {
+    private function toDecimal($deg, $min, $sec, $hemi) {
         $d = $deg + $min/60 + $sec/3600;
         return ($hemi=='S' || $hemi=='W') ? $d*=-1 : $d;
     }
 
-    private function divide($a)
-    {
+    private function divide($a) {
         // evaluate the string fraction and return a float
         $e = explode('/', $a);
         // prevent division by zero
-        if (!$e[0] || !$e[1]) {
+        if(!$e[0] || !$e[1]) {
             return 0;
-        } else {
+        }
+        else {
             return $e[0] / $e[1];
         }
     }
@@ -94,10 +94,8 @@ class LogImages extends \Plugin\AbstractPlugin {
     
     public function getOutput() {
         $source = '';
-        if(count($this->logImages)>0)
-        {
-            foreach($this->logImages as $logImage)
-            {
+        if(count($this->logImages)>0) {
+            foreach($this->logImages as $logImage) {
                 $hasCoords = $logImage->latitude!==null && $logImage->longitude!==null;
                 if($hasCoords) {
                     $coords = CoordsHelper::convertDecimalToDecimalMinute($logImage->latitude, $logImage->longitude);

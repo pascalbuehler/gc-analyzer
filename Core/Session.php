@@ -3,8 +3,19 @@
 namespace Core;
 
 class Session {
+    const SESSIONCLEANUP = 600; //seconds
+    const TIMESTAMPS_KEY = 'timestamps';
+    const BASEDATA_KEY = 'basedata';
+    const IMAGEDATA_KEY = 'imagedata';
+    const PLUGINDATA_KEY = 'plugindata';
+
     public static function init() {
         session_start();
+        // Set timestamp for cleanup
+        $runid = InputParameters::get('runid');
+        $_SESSION[self::TIMESTAMPS_KEY][$runid] = time();
+        // Do the cleanup
+        self::cleanUp();
     }
 
     public static function set($name, $value) {
@@ -46,6 +57,18 @@ class Session {
         $runid = InputParameters::get('runid');
 
         return $_SESSION[$runid];
+    }
+    
+    private static function cleanUp() {
+        $now = time();
+        if(isset($_SESSION[self::TIMESTAMPS_KEY])) {
+            foreach($_SESSION[self::TIMESTAMPS_KEY] as $runid=>$timestamp) {
+                if($now>($timestamp+self::SESSIONCLEANUP)) {
+                    unset($_SESSION[$runid]);
+                    unset($_SESSION[self::TIMESTAMPS_KEY][$runid]);
+                }
+            }
+        }
     }
     
     private static function insertNestedValue($array, $keys, $value) {

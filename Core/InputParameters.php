@@ -6,6 +6,10 @@ class InputParameters {
     private static $parameters = [];
     
     public static function init() {
+        // Defaults
+        InputParameters::set('page', Router::PAGE_HOME);
+        InputParameters::set('runid', uniqid('gcanalyzer'));
+
         // GET Parameters
         foreach($_GET as $name => $value) {
             if(in_array($name, ['url', 'rewrite'])) {
@@ -13,12 +17,6 @@ class InputParameters {
             }
             InputParameters::set($name, $value);
         }
-        
-        // RunID
-        InputParameters::set('runid', uniqid('gcanalyzer'));
-        
-        // Defaults
-        InputParameters::set('page', Router::PAGE_HOME);
     }
     
     public static function set($name, $value) {
