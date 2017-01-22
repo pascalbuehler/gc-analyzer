@@ -12,7 +12,7 @@ class Router {
     
     public static function route($url) {
         $url = mb_substr($url, -1, 1)=='/' ? mb_substr($url, 0, -1) : $url;
-        $urlpieces = explode('/', $url);
+        $urlpieces = strlen($url)>0 ? explode('/', $url) : [];
 
         // Home
         if(!is_array($urlpieces) || count($urlpieces)<1) {
