@@ -13,6 +13,7 @@ class Layout {
     }
     
     public function addPluginData(PluginResultModel $pluginResult) {
+        // @todo pass whole PluginResultModel to view, baybe addData() is better with nested keys from ArrayHelper
         $this->templateData['plugins'][$pluginResult->name] = [
             'runmode' => $pluginResult->runMode,
             'output' => $pluginResult->output,

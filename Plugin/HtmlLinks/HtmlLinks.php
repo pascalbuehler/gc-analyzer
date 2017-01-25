@@ -52,6 +52,7 @@ class HtmlLinks extends \Plugin\AbstractPlugin {
         if (\Helper\KnownUrlHelper::isCheckerUrl($href)) return '';
         if (\Helper\KnownUrlHelper::isGroundspeakUrl($href)) return '';
         
+        // @todo Use curl to get headers -> get_header does download the wohle file!
         $headers = get_headers($href, 1);
 
         $type = $headers["Content-Type"];
