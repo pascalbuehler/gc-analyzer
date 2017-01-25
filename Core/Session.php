@@ -2,6 +2,8 @@
 
 namespace Core;
 
+use Helper\ArrayHelper;
+
 class Session {
     const SESSIONCLEANUP = 600; //seconds
     const TIMESTAMPS_KEY = 'timestamps';
@@ -23,7 +25,7 @@ class Session {
         
         // Name as array
         if(is_array($name)) {
-            $_SESSION[$runid] = self::insertNestedValue($_SESSION[$runid], $name, $value);
+            $_SESSION[$runid] = ArrayHelper::insertNestedValue($_SESSION[$runid], $name, $value);
         }
         // Name as string
         else {
@@ -38,7 +40,7 @@ class Session {
 
         // Name as array
         if(is_array($name)) {
-            $value = self::getNestedValue($_SESSION[$runid], $name);
+            $value = ArrayHelper::getNestedValue($_SESSION[$runid], $name);
             if($value!==null) {
                 return $value;
             }
@@ -70,35 +72,5 @@ class Session {
             }
         }
     }
-    
-    private static function insertNestedValue($array, $keys, $value) {
-        $a = &$array;
-        while(count($keys)>0) {
-            $k = array_shift($keys);
-            if(!is_array($a)) {
-                $a = array();
-            }
-            $a = &$a[$k];
-        }
-        $a = $value;
-
-        return $array;
-    }
-
-    private static function getNestedValue($array, $keys) {
-        $found = true;
-        $a = &$array;
-        while(count($keys)>0) {
-            $k = array_shift($keys);
-            if(!isset($a[$k])) {
-                $found = false;
-                break;
-            }
-            $a = $a[$k];
-        }
-
-        return $found ? $a : null;
-    }
-    
 }
 

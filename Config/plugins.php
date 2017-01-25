@@ -80,7 +80,7 @@ return [
             'GC2T6E3' => 'Whirlpool',
         ],
         'author' => 'BlaiNnn',
-        'runmode' => true,
+        'runmode' => PluginRunner::RUN_PLUGIN_SYNC,
     ],
     'ListingImages' => [
         'class' => Plugin\ListingImages\ListingImages::class,

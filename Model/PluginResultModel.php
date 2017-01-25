@@ -11,4 +11,5 @@ class PluginResultModel {
     public $time = 0;
     public $status = self::PLUGIN_STATUS_OK;
     public $success = false;
+    public $runMode = false;
 }

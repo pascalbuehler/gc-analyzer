@@ -7,8 +7,12 @@ use Model\LogImageModel;
 
 class LogImages extends \Plugin\AbstractPlugin {
     private $logImages = [];
+
     public function calculate() {
         $data = ApiHelper::getImageData();
+        if($data==null) {
+            return;
+        }
                 
         foreach($data['Images'] as $image) {
             $logImageModel = new LogImageModel();

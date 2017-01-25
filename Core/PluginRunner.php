@@ -20,11 +20,27 @@ class PluginRunner {
 
         $runnedPlugins = [];
         foreach($config['plugins'] as $pluginName => $pluginConfig) {
-            $pluginResult = self::runPlugin($pluginName, $pluginConfig, $data, $runnedPlugins);
-            if($pluginResult!==false) {
-                Session::set([Session::PLUGINDATA_KEY, $pluginName], $pluginResult->result);
-                $layout->addPluginData($pluginResult);
-                $runnedPlugins[] = $pluginName;
+            if(!isset($pluginConfig['runmode'])) {
+                continue;
+            }
+            
+            switch($pluginConfig['runmode']) {
+                case self::RUN_PLUGIN_NONE:
+                    continue 2;
+                case self::RUN_PLUGIN_SYNC:
+                    $pluginResult = self::runPlugin($pluginName, $pluginConfig, $data, $runnedPlugins);
+                    if($pluginResult!==false) {
+                        Session::set([Session::PLUGINDATA_KEY, $pluginName], $pluginResult->result);
+                        $layout->addPluginData($pluginResult);
+                        $runnedPlugins[] = $pluginName;
+                    }
+                    break;
+                case self::RUN_PLUGIN_ASYNC:
+                    $pluginResult = new PluginResultModel();
+                    $pluginResult->name = $pluginName;
+                    $pluginResult->runMode = self::RUN_PLUGIN_ASYNC;
+                    $layout->addPluginData($pluginResult);
+                    break;
             }
         }
     }
@@ -48,13 +64,11 @@ class PluginRunner {
         if(!isset($config['class'])) {
             return false;
         }
-        if(isset($config['runmode']) && $config['runmode']===self::RUN_PLUGIN_NONE) {
-            return false;
-        }
 
         // Load plugin
         $parameters = isset($config['parameters']) ? $config['parameters'] : [];
-        $plugin = new $config['class']($data, $parameters);
+        $runmode = isset($config['runmode']) ? $config['runmode'] : self::RUN_PLUGIN_NONE;
+        $plugin = new $config['class']($data, $parameters, $runmode);
 
         // Check plugin
         if(!in_array(PluginInterface::class, class_implements($plugin))) {
@@ -86,6 +100,7 @@ class PluginRunner {
             $pluginResult->result = $plugin->getResult();
             $pluginResult->output = $plugin->getOutput();
             $pluginResult->success = $plugin->getSuccess();
+            $pluginResult->runMode = $plugin->getRunMode();
 
             $timeEnd = microtime(true);
             $pluginResult->time = $timeEnd - $timeStart;

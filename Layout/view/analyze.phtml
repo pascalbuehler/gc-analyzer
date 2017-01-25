@@ -12,7 +12,8 @@
             </div>
 
 <?php foreach($plugins as $pluginName => $pluginData): ?>
-<?php if(!isset($pluginData['output']) || $pluginData['output']===false || !strlen($pluginData['output'])>0) { continue; } ?>
+<?php $hasOutput = (isset($pluginData['output']) && $pluginData['output']!==false && strlen($pluginData['output'])>0) || $pluginData['runmode']==\Core\PluginRunner::RUN_PLUGIN_ASYNC; ?>
+<?php if(!$hasOutput) { continue; } ?>
             <div id="plugin-<?= $pluginName ?>" class="well">
                 <div class="row">
                     <div class="col-xs-9 col-sm-10 col-md-11">
@@ -26,7 +27,12 @@
                     </div>
                 </div>
                 <div>
+<?php if($pluginData['runmode']==\Core\PluginRunner::RUN_PLUGIN_ASYNC): ?>
+                    PLUGIN HAS TO RUN ASYNC<br>
+                    TODO: Pass PluginResultModel to view!
+<?php else: ?>
                     <?= $pluginData['output'] ?>
+<?php endif; ?>
                 </div>
             </div>
 <?php endforeach; ?>

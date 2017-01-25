@@ -14,6 +14,7 @@ class Layout {
     
     public function addPluginData(PluginResultModel $pluginResult) {
         $this->templateData['plugins'][$pluginResult->name] = [
+            'runmode' => $pluginResult->runMode,
             'output' => $pluginResult->output,
             'status' => $pluginResult->status,
             'success' => $pluginResult->success,
