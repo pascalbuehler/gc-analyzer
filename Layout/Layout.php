@@ -1,7 +1,7 @@
 <?php
 namespace Layout;
 
-use \Model\PluginResultModel;
+use Helper\ArrayHelper;
 
 class Layout {
     private $template;
@@ -12,17 +12,10 @@ class Layout {
         $this->templateData = $templateData;
     }
     
-    public function addPluginData(PluginResultModel $pluginResult) {
-        // @todo pass whole PluginResultModel to view, baybe addData() is better with nested keys from ArrayHelper
-        $this->templateData['plugins'][$pluginResult->name] = [
-            'runmode' => $pluginResult->runMode,
-            'output' => $pluginResult->output,
-            'status' => $pluginResult->status,
-            'success' => $pluginResult->success,
-            'time' => number_format($pluginResult->time, 2),
-        ];
+    public function addData($name, $value) {
+        $this->templateData = ArrayHelper::insertNestedValue($this->templateData, $name, $value);
     }
-    
+
     public function render() {
         // Export plugin data
         foreach($this->templateData as $dataName => $data) {

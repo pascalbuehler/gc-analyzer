@@ -31,7 +31,7 @@ class PluginRunner {
                     $pluginResult = self::runPlugin($pluginName, $pluginConfig, $data, $runnedPlugins);
                     if($pluginResult!==false) {
                         Session::set([Session::PLUGINDATA_KEY, $pluginName], $pluginResult->result);
-                        $layout->addPluginData($pluginResult);
+                        $layout->addData(['plugins', $pluginResult->name], $pluginResult);
                         $runnedPlugins[] = $pluginName;
                     }
                     break;
@@ -39,7 +39,7 @@ class PluginRunner {
                     $pluginResult = new PluginResultModel();
                     $pluginResult->name = $pluginName;
                     $pluginResult->runMode = self::RUN_PLUGIN_ASYNC;
-                    $layout->addPluginData($pluginResult);
+                    $layout->addData(['plugins', $pluginResult->name], $pluginResult);
                     break;
             }
         }
@@ -55,7 +55,7 @@ class PluginRunner {
         $pluginResult = self::runPlugin($pluginName, $pluginConfig, $data, []);
         if($pluginResult!==false) {
             Session::set([Session::PLUGINDATA_KEY, $pluginName], $pluginResult->result);
-            $layout->addPluginData($pluginResult);
+            $layout->addData(['plugins', $pluginResult->name], $pluginResult);
         }
     }
 

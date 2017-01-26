@@ -49,16 +49,23 @@ class HtmlLinks extends \Plugin\AbstractPlugin {
 
     private function getHeaderContentType($href) {
         // get headers, if not a checker-url
-        if (\Helper\KnownUrlHelper::isCheckerUrl($href)) return '';
-        if (\Helper\KnownUrlHelper::isGroundspeakUrl($href)) return '';
-        
-        // @todo Use curl to get headers -> get_header does download the wohle file!
-        $headers = get_headers($href, 1);
-
-        $type = $headers["Content-Type"];
-        if (is_array($type)){
-            $type = $type[1];
+        if(\Helper\KnownUrlHelper::isCheckerUrl($href) || \Helper\KnownUrlHelper::isGroundspeakUrl($href)) {
+            return '';
         }
+        
+        $resCurl = curl_init($href);
+        curl_setopt($resCurl, CURLOPT_HEADER, true);
+        curl_setopt($resCurl, CURLOPT_NOBODY, true);
+        curl_setopt($resCurl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($resCurl, CURLOPT_FOLLOWLOCATION, true);
+        $headers = curl_exec($resCurl);
+        curl_close($resCurl);
+
+        $res = preg_match_all('/content-type:(.+)/', strtolower($headers), $type);
+        if($res && isset($type[1]) && is_array($type[1]) && count($type[1])>0) {
+            $type = $type[1][0];
+        }
+        
         return $type;
     }
     

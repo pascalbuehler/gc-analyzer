@@ -1,5 +1,5 @@
-<?php if($plugins[$pluginName]['status']): ?>
-<?= $plugins[$pluginName]['output'] ?>
+<?php if($plugins[$pluginName]->status==\Model\PluginResultModel::PLUGIN_STATUS_OK): ?>
+<?= $plugins[$pluginName]->output ?>
 <?php else: ?>
 Ups, somith went wrong running plugin <?= $pluginName ?>.
 <?php endif; ?>
