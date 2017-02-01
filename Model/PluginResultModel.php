@@ -8,7 +8,7 @@ class PluginResultModel {
     public $name = '';
     public $result = [];
     public $output = '';
-    public $time = 0;
+    public $time = false;
     public $status = self::PLUGIN_STATUS_OK;
     public $success = false;
     public $runMode = false;

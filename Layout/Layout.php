@@ -2,6 +2,7 @@
 namespace Layout;
 
 use Helper\ArrayHelper;
+use Core\InputParameters;
 
 class Layout {
     private $template;
@@ -10,6 +11,7 @@ class Layout {
     public function __construct($template, array $templateData = []) {
         $this->template = $template;
         $this->templateData = $templateData;
+        $this->templateData['runid'] = InputParameters::get('runid');
     }
     
     public function addData($name, $value) {

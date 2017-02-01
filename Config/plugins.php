@@ -168,7 +168,7 @@ return [
         'author' => 'BlaiNnn',
         'runmode' => PluginRunner::RUN_PLUGIN_SYNC,
     ],
-    'LogImages with GPS' => [
+    'LogImages' => [
         'class' => Plugin\LogImages\LogImages::class,
         'parameters' => [
             'fields' => []

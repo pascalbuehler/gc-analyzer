@@ -3,10 +3,11 @@
         <div class="container">
             <div class="well">
 <?php foreach($plugins as $pluginName => $pluginResult): ?>
-                <a href="#plugin-<?= $pluginName ?>" class="btn btn-margin-bottom <?= $pluginResult->status==\Model\PluginResultModel::PLUGIN_STATUS_FAILED ? 'btn-danger' : 'btn-primary' ?>" role="button"<?= !isset($pluginResult->output) || $pluginResult->output===false || !strlen($pluginResult->output)>0 ? ' disabled' : '' ?>>
-                    <?php if($pluginResult->success): ?><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> <?php endif; ?>
+<?php $isAsync = $pluginResult->runMode==\Core\PluginRunner::RUN_PLUGIN_ASYNC; ?>
+                <a href="#plugin-<?= $pluginName ?>" id="plugin-button-<?= $pluginName ?>" class="btn btn-margin-bottom <?= $pluginResult->status==\Model\PluginResultModel::PLUGIN_STATUS_FAILED ? 'btn-danger' : 'btn-primary' ?>" role="button"<?= !isset($pluginResult->output) || $pluginResult->output===false || !strlen($pluginResult->output)>0 ? ' disabled' : '' ?>>
+                    <?php if($pluginResult->success): ?><i class="glyphicon glyphicon-exclamation-sign"></i> <?php endif; ?>
                     <?= $pluginName ?>
-<?php if(isset($layoutConfig['printPluginRuntime']) && $layoutConfig['printPluginRuntime']) { echo '&nbsp;('.number_format($pluginResult->time, 2).'s)'; }?>
+<?php if(isset($layoutConfig['printPluginRuntime']) && $layoutConfig['printPluginRuntime'] && !$isAsync) { echo '&nbsp;('.number_format($pluginResult->time, 2).'s)'; }?>
                 </a>
 <?php endforeach; ?>
             </div>
@@ -14,23 +15,20 @@
 <?php foreach($plugins as $pluginName => $pluginResult): ?>
 <?php $hasOutput = (isset($pluginResult->output) && $pluginResult->output!==false && strlen($pluginResult->output)>0) || $pluginResult->runMode==\Core\PluginRunner::RUN_PLUGIN_ASYNC; ?>
 <?php if(!$hasOutput) { continue; } ?>
-            <div id="plugin-<?= $pluginName ?>" class="well">
-                <div class="row">
+            <div id="plugin-container-<?= $pluginName ?>" class="well" data-pluginname="<?= $pluginName ?>" data-pluginrunmode="<?= $pluginResult->runMode ?>" data-runid="<?= $runid ?>">
+                <div id="plugin-header-<?= $pluginName ?>" class="row">
                     <div class="col-xs-9 col-sm-10 col-md-11">
                         <a name="plugin-<?= $pluginName ?>"></a>
-                        <h2 class="text-primary nomargin-top">
-                            <?php if($pluginResult->success): ?><span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <?php endif; ?><?= $pluginName ?>
+                        <h2 class="text-primary nomargin-top" id="plugin-title-<?= $pluginName ?>">
+                            <?php if($pluginResult->success): ?><i class="glyphicon glyphicon-exclamation-sign text-danger"></i> <?php endif; ?><?= $pluginName ?>
                         </h2>
                     </div>
                     <div class="col-xs-3 col-sm-2 col-md-1 text-right">
                         <a href="#" role="button" class="btn btn-default">top</a>
                     </div>
                 </div>
-                <div>
-<?php if($pluginResult->runMode==\Core\PluginRunner::RUN_PLUGIN_ASYNC): ?>
-                    PLUGIN HAS TO RUN ASYNC<br>
-                    TODO: Pass PluginResultModel to view!
-<?php else: ?>
+                <div id="plugin-output-<?= $pluginName ?>">
+<?php if($pluginResult->runMode==\Core\PluginRunner::RUN_PLUGIN_SYNC): ?>
                     <?= $pluginResult->output ?>
 <?php endif; ?>
                 </div>

@@ -60,7 +60,7 @@ class PluginRunner {
     }
 
     private static function runPlugin($name, array $config, array &$data, array $runnedPlugins = []) {
-        // Check plugin
+        // Check config
         if(!isset($config['class'])) {
             return false;
         }

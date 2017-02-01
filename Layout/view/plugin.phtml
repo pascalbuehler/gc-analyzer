@@ -1,7 +1,8 @@
-<?php if($plugins[$pluginName]->status==\Model\PluginResultModel::PLUGIN_STATUS_OK): ?>
-<?= $plugins[$pluginName]->output ?>
-<?php else: ?>
-Ups, somith went wrong running plugin <?= $pluginName ?>.
-<?php endif; ?>
+<?php
+if(!isset($layoutConfig['printPluginRuntime']) || !$layoutConfig['printPluginRuntime']) {
+    $plugins[$pluginName]->time = false;
+}
+?>
+<?= json_encode($plugins[$pluginName]) ?>
 
 
