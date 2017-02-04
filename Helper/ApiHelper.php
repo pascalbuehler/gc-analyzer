@@ -23,7 +23,7 @@ class ApiHelper {
         $data = Session::get(Session::IMAGEDATA_KEY);
         if($data===false) {
             $config = ConfigHelper::getConfig();
-            $config['apiParameters']['code'] = InputParameters::get('code');
+            $config['apiParametersImages']['code'] = InputParameters::get('code');
             $url = $config['apiEndpointImages'].'?'.http_build_query($config['apiParametersImages']);
             $data = self::callApi($url);
             Session::set(Session::IMAGEDATA_KEY, $data);

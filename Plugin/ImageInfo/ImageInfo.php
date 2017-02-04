@@ -2,6 +2,7 @@
 namespace Plugin\ImageInfo;
 
 use Core\Session;
+use Helper\Utf8Helper;
 
 class ImageInfo extends \Plugin\AbstractPlugin {
     private $imagesWithInfo = [];
@@ -36,7 +37,7 @@ class ImageInfo extends \Plugin\AbstractPlugin {
                         if($size[2] == IMAGETYPE_JPEG) {
                             $exif = @exif_read_data($imageWithInfoModel->getImgSrcBase64(), 'FILE', true);
                             if($exif != null && $exif != '') {
-                                $imageWithInfoModel->exif = $exif;
+                                $imageWithInfoModel->exif = Utf8Helper::utf8EncodeArray($exif);
                                 $this->setSuccess(true);
                             }
                         }

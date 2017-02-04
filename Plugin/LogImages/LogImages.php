@@ -3,6 +3,7 @@ namespace Plugin\LogImages;
 
 use Helper\ApiHelper;
 use Helper\CoordsHelper;
+use Helper\Utf8Helper;
 use Model\LogImageModel;
 
 class LogImages extends \Plugin\AbstractPlugin {
@@ -27,14 +28,17 @@ class LogImages extends \Plugin\AbstractPlugin {
             }
             
             $exif = @exif_read_data($logImageModel->url, 0, true);
-            $logImageModel->exif = $exif;
-            
             if($exif == null || $exif == '') {
                 continue;
             }
             if(!isset($exif['GPS'])) {
                 continue;
             }
+            if(is_array($exif)) {
+                $exif = Utf8Helper::utf8EncodeArray($exif);
+            }
+            $logImageModel->exif = $exif;
+
             $pos = $this->getGpsPositionFromExif($exif);
             if($pos) {
                 $logImageModel->latitude = $pos[0];

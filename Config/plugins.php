@@ -152,7 +152,7 @@ return [
             'GC3PK9V' => 'Unsichtbar?',
         ],
         'author' => 'BlaiNnn',
-        'runmode' => PluginRunner::RUN_PLUGIN_SYNC,
+        'runmode' => PluginRunner::RUN_PLUGIN_ASYNC,
     ],
     'Youtube' => [
         'class' => Plugin\YoutubeSearch\YoutubeSearch::class,
@@ -168,7 +168,7 @@ return [
         'author' => 'BlaiNnn',
         'runmode' => PluginRunner::RUN_PLUGIN_SYNC,
     ],
-    'LogImages' => [
+    'LogImagesExifGPS' => [
         'class' => Plugin\LogImages\LogImages::class,
         'parameters' => [
             'fields' => []
@@ -178,6 +178,6 @@ return [
             'GC2HJD3' => 'Strömli #3',
         ],
         'author' => 'BlaiNnn',
-        'runmode' => PluginRunner::RUN_PLUGIN_NONE,
+        'runmode' => PluginRunner::RUN_PLUGIN_ASYNC,
     ],
 ];
