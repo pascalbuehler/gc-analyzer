@@ -5,7 +5,7 @@ $(document).ready(function(){
     $('#home-form-search').click(function() {
         var code = $('input[name="code"]', $(this)).val();
         if(code.length>0) {
-            window.location.href = '/'+code;
+            window.location.href = './'+code;
         }
     });
     // Run async plugins
