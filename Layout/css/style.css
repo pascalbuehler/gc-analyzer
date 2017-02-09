@@ -1,6 +1,10 @@
 /***************
  * General
  **************/
+#icon {
+    margin-bottom: 4px;
+}
+
 .nomargin-top {
     margin-top: 0px;
 }
