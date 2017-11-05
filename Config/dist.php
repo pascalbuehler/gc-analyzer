@@ -11,6 +11,11 @@ return [
         'token' => '',
     ],
     
+    'apiEndpointLogs' => '',
+    'apiParametersLogs' => [
+        'token' => '',
+    ],
+    
     'plugins' => include('plugins.php'),
     
     'layout' => [

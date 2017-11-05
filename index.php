@@ -14,6 +14,7 @@ unset($_SERVER['PHP_SELF']);
 // ERROR REPORTING
 error_reporting(E_ALL);
 ini_set('dislay_errors', 1);
+ini_set('dislay_startup_errors', 1);
 
 // TIMEZONE
 date_default_timezone_set('UTC');

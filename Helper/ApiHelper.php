@@ -31,6 +31,18 @@ class ApiHelper {
         return $data;
     }
     
+    public static function getLogData() {
+        $data = Session::get(Session::LOGDATA_KEY);
+        if($data===false) {
+            $config = ConfigHelper::getConfig();
+            $config['apiParametersLogs']['code'] = InputParameters::get('code');
+            $url = $config['apiEndpointLogs'].'?'.http_build_query($config['apiParametersLogs']);
+            $data = self::callApi($url);
+            Session::set(Session::LOGDATA_KEY, $data);
+        }
+        return $data;
+    }
+    
     private static function callApi($url) {
         $data = file_get_contents($url);
         if(!$data) {

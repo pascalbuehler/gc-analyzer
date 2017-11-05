@@ -63,6 +63,7 @@ return [
             'GC6WTA0' => 'Wetter-Anzeige (Nightcache)',
             'GC6G1P7' => 'Soundcheck! track two',
             'GC549K3' => 'Kulturgut Kirchenlied RG 247',
+            'GC5QHDC' => 'Hikiashi tanzt Samba',
         ],
         'author' => 'BlaiNnn',
         'runmode' => PluginRunner::RUN_PLUGIN_SYNC,
@@ -176,6 +177,18 @@ return [
         'description' => 'Searches for GPS-Coordinates in log images',
         'examples' => [
             'GC2HJD3' => 'Strömli #3',
+        ],
+        'author' => 'BlaiNnn',
+        'runmode' => PluginRunner::RUN_PLUGIN_ASYNC,
+    ],
+    'OwnerLogs' => [
+        'class' => Plugin\OwnerLogs\OwnerLogs::class,
+        'parameters' => [
+            'fields' => []
+        ],
+        'description' => 'Search for Owner Logs',
+        'examples' => [
+            'GC7C4YN' => 'blank-presque',
         ],
         'author' => 'BlaiNnn',
         'runmode' => PluginRunner::RUN_PLUGIN_ASYNC,

@@ -9,6 +9,7 @@ class Session {
     const TIMESTAMPS_KEY = 'timestamps';
     const BASEDATA_KEY = 'basedata';
     const IMAGEDATA_KEY = 'imagedata';
+    const LOGDATA_KEY = 'logdata';
     const PLUGINDATA_KEY = 'plugindata';
 
     public static function init() {
