@@ -2,9 +2,7 @@
 namespace Plugin\OwnerLogs;
 
 use Helper\ApiHelper;
-use Helper\CoordsHelper;
-use Helper\Utf8Helper;
-use Model\logModel;
+use Model\LogModel;
 
 class OwnerLogs extends \Plugin\AbstractPlugin {
     private $OwnerLogs = [];
