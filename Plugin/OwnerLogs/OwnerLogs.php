@@ -20,7 +20,7 @@ class OwnerLogs extends \Plugin\AbstractPlugin {
             $isOwnerLog = $log['Finder']['UserName'] == $this->data['Owner']['UserName'];
             
             if ($isOwnerLog || $log['LogType']['WptLogTypeName'] == 'Publish Listing') {
-                $logModel = new logModel();
+                $logModel = new LogModel();
                 $logModel->visitDate = date_format(date_create($log['VisitDateIso']), "d M Y h:i");
                 $logModel->logType = $log['LogType']['WptLogTypeName'];
                 $logModel->text = $log['LogText'];
