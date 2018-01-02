@@ -90,9 +90,10 @@ return [
                 'Images'
             ]
         ],
-        'description' => 'Finds images attached to the listing.',
+        'description' => 'Finds images attached to the listing and checks for infos in Avatar of owner.',
         'examples' => [
             'GC56NXQ' => 'Hard Targets: Plan B',
+            'GC7ENPG' => 'Mother of all blank cache',
         ],
         'author' => 'BlaiNnn',
         'runmode' => PluginRunner::RUN_PLUGIN_SYNC,
