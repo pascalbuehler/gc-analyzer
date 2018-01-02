@@ -12,7 +12,7 @@ class ListingImages extends \Plugin\AbstractPlugin {
                 
                 if (\Helper\KnownUrlHelper::isCheckerUrl($url)) continue;
                 
-                addImageToArray($field, $url, $image['Name'], $image['Description']);                
+                $this->addImageToArray($field, $url, $image['Name'], $image['Description']);
             }
         }
         
