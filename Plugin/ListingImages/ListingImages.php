@@ -16,8 +16,8 @@ class ListingImages extends \Plugin\AbstractPlugin {
             }
         }
         
-        $avatarImageUrl = $this->data["Owner"]["AvatarUrl"];
-        $this->addImageToArray("owner_avatar", $avatarImageUrl, 'Avatar of Owner', '');
+        $avatarImageUrl = str_replace("/avatar/", "/display/", $this->data["Owner"]["AvatarUrl"]);
+        $this->addImageToArray("owner_avatar_big", $avatarImageUrl, 'Avatar of Owner (big)', '');
     }
 
     public function getResult() {
