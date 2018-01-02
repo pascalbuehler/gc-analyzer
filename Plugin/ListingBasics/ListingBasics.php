@@ -65,7 +65,7 @@ class ListingBasics extends \Plugin\AbstractPlugin {
                 $source.= '    <div class="caption">'.PHP_EOL;
                 $source.= '      <table class="table table-condensed">'.PHP_EOL;
                 if(strlen($waypoint->description)>0) {
-                    $source.= '        <tr><td valign="top">Description</td><td>'.nl2br($waypoint->description).'</td></tr>'.PHP_EOL;
+                    $source.= '        <tr><td valign="top">Description</td><td>'.nl2br(htmlentities($waypoint->description)).'</td></tr>'.PHP_EOL;
                 }
                 if($waypoint->latitude!==null && $waypoint->longitude!==null) {
                     $source.= '        <tr><td valign="top">Coords</td><td>'.$this->getCoordsDisplay($waypoint->latitude, $waypoint->longitude).'</td></tr>'.PHP_EOL;
